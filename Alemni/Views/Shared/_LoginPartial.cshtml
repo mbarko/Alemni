@@ -1,0 +1,45 @@
+﻿@using Alemni.Models
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" class="">Become an E_tutor</a></li>
+           
+            <li class="dropdown ">
+                <a id="happy_btn" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><i class='ion-happy'></i> </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="@Url.Action("MyVideoSeries", "VideoSeries")"><i class='ion-ios-book'></i> &nbsp;&nbsp;My Courses</a></li>
+                    @if (User.IsInRole(RoleName.AccessToVideosICreated))
+                    {
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("VideoSeriesICreated", "VideoSeries")"><i class='ion-ios-videocam'></i> &nbsp;&nbsp;My Creations</a></li>
+                    }
+                    <li class="divider"></li>
+                    <li><a href="@Url.Action("Index", "Manage")"><i class='ion-person'></i> &nbsp;&nbsp;Manage Account</a></li>
+
+                    <li class="divider"></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class='ion-log-out'></i> &nbsp;&nbsp;Logout</a></li>
+
+
+                </ul>
+<li>
+
+               
+            </li>
+          
+        </ul>
+
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" class="">Become an E_tutor</a></li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new {id = "registerLink"})</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
+    </ul>
+}

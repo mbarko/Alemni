@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cbe60618e98a40c3b56b4cece5ba8efc" Name="Diagram1">
+        <EntityTypeShape EntityType="EvilGenius0Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.AspNetRole" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.AspNetUser" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.CardInfo" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.City" Width="1.5" PointX="3.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.CollectionInfo" Width="1.5" PointX="6" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.CollectionType" Width="1.5" PointX="6" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Country" Width="1.5" PointX="1.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Cours" Width="1.5" PointX="8.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Programm" Width="1.5" PointX="6" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Table" Width="1.5" PointX="8.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Teacher" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Transaction" Width="1.5" PointX="12.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.UserInfo" Width="1.5" PointX="11" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.UserType" Width="1.5" PointX="8.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Video" Width="1.5" PointX="12.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvilGenius0Model.VideoSery" Width="1.5" PointX="10.5" PointY="5.125" IsExpanded="true" />
+        <AssociationConnector Association="EvilGenius0Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.Id_Teacher_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.student_Transactions_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.city_CollectionInfo_City" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.country_City_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.collectioninfo_Teacher_CollectionInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.payetinfo_Transactions_CollectionInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.collectionType_Teacher_CollectionType" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.course_VideoSeries_Courses" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.program_Courses_Programms" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.madeby_VideoSeries_Teacher" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.vidoseries_Transactions_Teacher" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.usertype_userInfo_userType" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.videoseries_Video_VideoSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="EvilGenius0Model.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

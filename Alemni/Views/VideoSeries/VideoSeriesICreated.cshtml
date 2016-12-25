@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "VideoSeriesICreated";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<section>
+    <h2>My Courses</h2>
+    <h4>View your video series </h4>
+</section>
+<hr>
+
+
+
+
+
+
+<table class=" table table-bordered table-hover responsive" id="courses"><thead><tr><th>Course Name</th><th>Start Date</th><th>End Date</th></tr></thead><tbody></tbody></table>
+<div class="quarter_page">&nbsp;</div>
+
+@section scripts
+{
+    <script>
+            $(document)
+                .ready(function () {
+                    $("#courses")
+                        .DataTable({
+                            "bAutoWidth": false, "bLengthChange": false,
+                            "bFilter": true,
+                            ajax: {
+                                url: "/api/VideoSeries/MyVideoSeries",
+                                dataSrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "name",
+                                    render: function (data, type, VideoSery) {
+                                        return data;
+                                    }
+                                },
+                                {
+                                    data: "startdate",
+                                    sType: "date",
+                                    render: function(data, type, VideoSery) {
+                                        return data;
+                                    }
+
+                                },
+                                {
+                                    data: "enddate",
+                                    sType: "date",
+                                    render: function (data, type, VideoSery) {
+                                        return data;
+                                    }
+                                }
+                            ]
+
+                        }
+                    );
+                });
+
+    </script>
+}
+
+
+
+

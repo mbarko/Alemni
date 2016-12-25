@@ -1,0 +1,148 @@
+﻿
+@model Alemni.ViewModels.VideoSeryViewModel
+@{
+    ViewBag.Title = "VideoSery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    var display = @Model.State == true ? "none" : "visible";
+   
+}
+
+<div id="VideoSeryPage">
+    <div class="jumbotron videoSery_jumbotron">
+        <h1>MathHl</h1>
+        <button style="display: @display" type="button" id="transaction_btn" class="btn btn_videoSery">Take This Course</button>
+    </div>
+
+    <div class="VideoSery_image" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)) ,url(https://3lemnypics.blob.core.windows.net/videoserymainpic/TestPic.jpg);">
+        <div class="VideoSery_summaryTab">
+
+            <div class="container VideoSery_summaryIcons">
+
+                <div class="col-sm-3 col-lg-3 ">
+                    <h5><i class="ion-clock "></i> Duration: @Model.VideoSery.duration hours</h5>
+                </div>
+                <div class="col-sm-3 col-lg-3 ">
+                    <h5><i class="ion-ios-book "></i> Program: @Model.VideoSery.programmName </h5>
+                </div>
+                <div class="col-sm-3 col-lg-3 ">
+                    <h5><i class="ion-play "></i> Lectures: @Model.VideoSery.videos </h5>
+                </div>
+                <div class="col-sm-3 col-lg-3 ">
+                    <h5><i class="ion-ios-people"></i> Enrollments: @Model.VideoSery.enrollments </h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="VideoSery_body">
+        <a class=" col-md-2  sm-no-margin  white-space">&nbsp;</a>
+        <div class="col-xs-12 col-md-6 col-xl-9 sm-no-margin  white-space"><div class="VideoSery_video">&nbsp;</div></div>
+        <div class="col-xs-12 col-md-4 col-xl-3 VideoSery_sidebar-col white-space">
+            <ul class="nav nav-tabs">
+
+                <li class="active"><a href="#lectures" data-toggle="tab" aria-expanded="true">Lectures</a></li>
+                <li class=""><a href="#overview" data-toggle="tab" aria-expanded="false">Overview</a></li>
+                @*<li class="disabled"><a>Disabled</a></li>*@
+                <li class="dropdown ">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                        Tutor <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">Contact</a></li>
+                        <li class="divider"></li>
+                        <li class=""><a href="#dropdown2" data-toggle="tab" aria-expanded="false">Qualifications</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="lectures">
+                    <ul>
+                        @if (@Model.State) {
+                        foreach (var video in @Model.Videos)
+                        {
+
+                            <a href="#" class="list-group-item">
+
+                                <span class="badge">@video.duration</span>
+                                @if (video.paid)
+                                {
+                                    <i style="display: @display" class="ion-android-lock">&nbsp;</i>
+                                }
+                                @video.name
+                            </a>
+
+                            }
+                        }
+                        else { foreach (var video in @Model.VideosLocked)
+                            {
+
+                                <a href="#" class="list-group-item">
+
+                                    <span class="badge">@video.duration</span>
+                                    @if (video.paid)
+                                    {
+                                        <i style="display: @display" class="ion-android-lock">&nbsp;</i>
+                                    }
+                                    @video.name
+                                </a>
+
+                            }}
+                    </ul>
+
+                </div>
+                <div class="tab-pane fade" id="overview">
+                    <p>@Model.VideoSery.overview </p>
+                </div>
+                <div class="tab-pane fade" id="dropdown1">
+                    <div class="list-group">
+                        <li href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">Phone </h4>
+                            <p class="list-group-item-text">@Model.VideoSery.teacherPhone</p>
+                        </li>
+                        <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Email</h4>
+                            <p class="list-group-item-text">@Model.VideoSery.teacherEmail</p>
+                        </li>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="dropdown2">
+                    <p>@Model.VideoSery.teacherCredentials</p>
+                </div>
+            </div>
+        </div>
+        <a class=" col-md-0  sm-no-margin  white-space">&nbsp;</a>
+
+
+    </div>
+
+    <div class="quarter_page">&nbsp;</div>
+</div>
+
+@section scripts
+{<script>
+
+     $('#transaction_btn')
+         .click(function() {
+             $.ajax({
+                 url: '/api/Transactions',
+                 type: 'POST',
+                 dataType:'html',
+                 data:
+                 {
+                     id: @Model.VideoSery.Id,
+
+                 },
+                 success: function (data) {
+                     
+                     window.location = "/VideoSeries/VideoSery/"+@Model.VideoSery.Id;
+                 },
+                 error: function(xhr, error) {
+                     alert('Transaction Failed :(');
+                 }
+             });
+         });
+ </script>}
