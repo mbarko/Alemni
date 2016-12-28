@@ -38,6 +38,9 @@ body {
 	display: block;
 }
 
+.navbar-inverse .navbar-nav > li > a:hover {
+         background-color:#d34615
+}
 .nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
 	margin-top: 0;
 }
@@ -160,24 +163,69 @@ ul {
 }
 
 
-.btn-program {
-	color: #FFFFFF;
+.jumbotron p {
+    margin-bottom: 20px;
 }
 
-	.btn-program:focus,
-	.btn-program.focus {
-		color: #d34615;
-	}
 
-	.btn-program:hover {
-		color: #d34615;
-	}
 
-	.btn-program:active,
-	.btn-program.active,
-	.open > .dropdown-toggle.btn-success {
-		color: #d34615;
-	}
+  .btn-primary h3{
+      margin-top: 2px;
+
+      margin-bottom: 2px;
+
+
+}
+
+       .btn-primary{
+     background-color: #e95420;
+  
+ 
+}
+          .btn-primary:hover{
+              background-color: #d34615;
+
+              border-color: #d34615;
+
+}
+
+     .jumbotron .btn-primary{
+     background-color: transparent;
+     margin-right: 1%;
+     border-color: transparent; 
+     border-width: 2.1px;
+     font-weight: 100;
+ 
+
+
+}
+
+ .jumbotron .btn-primary:hover{
+     background-color: transparent;
+     border-color:  transparent;
+     color:  #e95420;
+
+}
+  .btn-primary:active,.btn-primary:focus, .btn-primary.active, .open > .dropdown-toggle.btn-primary,.btn-nav-icon:hover,.btn-nav-icon:focus {
+    color: #ffffff;
+      background-color: #d34615;
+      border-color: transparent;
+}
+  .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+    color: #ffffff;
+      background-color: #d34615;
+      border-color:  transparent;
+}
+
+  .btn-ibprogram{ padding-right: 24px;
+      padding-left: 24px;
+
+  }
+    .btn-satprogram{ padding-right: 20px;
+      padding-left: 20px;
+  }
+ #alevels{ margin-right: 0;}
+	
 
    
     #happy_btn{ padding-bottom: 11px;}
@@ -199,20 +247,6 @@ ul {
    
 }
 
-	.btn-nav-icon:focus,
-	.btn-nav-icon.focus {
-		background-color: #d34615;
-	}
-
-	.btn-nav-icon:hover {
-		background-color: #d34615;
-	}
-
-	.btn-nav-icon:active,
-	.btn-nav-icon.active,
-	.open > .dropdown-toggle.btn-success {
-		background-color: #d34615;
-	}
 
 .search-resize {
 	 float: left;
@@ -404,3 +438,10 @@ th {
  .VideoSery_sidebar-col {
    
  }
+
+
+ td > .dropdown-menu{ left: auto;}
+
+  td  input{ min-width: 80px;
+      max-width: 100px;
+  }
