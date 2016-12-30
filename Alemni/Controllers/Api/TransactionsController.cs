@@ -140,13 +140,15 @@ namespace Alemni.Controllers.Api
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostTransaction(Transaction videoseriesId)
         {
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            
 
             // Get the current logged in User and look up the user in ASP.NET Identity
-            var currentUser = manager.FindById(User.Identity.GetUserId());
+            var currentUser = User.Identity.GetUserId();
+            if(currentUser == null)
+                return Ok("please login");
 
             //Create the transaction object
-           Transaction transaction = new Transaction
+            Transaction transaction = new Transaction
             {
                 videoseries = videoseriesId.Id,
                 payerInfo = 1,
@@ -154,18 +156,15 @@ namespace Alemni.Controllers.Api
                 startdate = DateTime.UtcNow,
                 enddate = DateTime.UtcNow.AddMonths(6),
                 paymentstatus = true,
-                student = currentUser.Id,
+                student = currentUser,
                 payment = 350,
 
             
             };
-
-
-
-
-
-
-
+            var v = (from videoSery in db.VideoSeries
+                    where videoSery.Id== videoseriesId.Id
+                    select videoSery).First();
+            v.enrollments += 1;
             db.Transactions.Add(transaction);
 
             try

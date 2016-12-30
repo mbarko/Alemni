@@ -32,12 +32,12 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   text-indent: 4px;
   line-height: 16px;
   content: '+';
-  background-color: #31b131;
+    background-color: rgb(0, 150, 136);
 }
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
   content: '-';
-  background-color: #d33333;
+  background-color: #d34615;
 }
 table.dataTable.dtr-inline.collapsed > tbody > tr.child td:before {
   display: none;
@@ -81,12 +81,12 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
   text-indent: 4px;
   line-height: 16px;
   content: '+';
-  background-color: #31b131;
+  background-color:  #d34615;
 }
 table.dataTable.dtr-column > tbody > tr.parent td.control:before,
 table.dataTable.dtr-column > tbody > tr.parent th.control:before {
   content: '-';
-  background-color: #d33333;
+  background-color:  #d34615;
 }
 table.dataTable > tbody > tr.child {
   padding: 0.5em 1em;

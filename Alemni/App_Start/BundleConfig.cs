@@ -14,7 +14,8 @@ namespace Alemni
                       "~/Scripts/respond.js",
                       "~/Scripts/datatables/jquery.datatables.js",
                       "~/Scripts/datatables/datatables.bootstrap.js", "~/Scripts/datatables/datatables.responsive.js",
-                       "~/Scripts/bootstrap.js"
+                       "~/Scripts/bootstrap.js",
+                       "~/Scripts/bootbox.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

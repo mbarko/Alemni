@@ -12,9 +12,11 @@ using System.Web.Http.Description;
 using Alemni;
 using Alemni.Models;
 using Alemni.Models.Dtos;
+using Alemni.Models.Dtos.VideoSeriesICreatedDtos;
 using Alemni.Models.Dtos.VideoSeryViewDtos;
 using Alemni.Models.Dtos.VidoSeriesViewDtos;
 using AutoMapper;
+using JsonPatch;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -27,7 +29,9 @@ namespace Alemni.Controllers.Api
         private EvilGenius0Entities db = new EvilGenius0Entities();
 
 
-        //// GET: api/VideoSeries/
+        //GET: REQUESTS SECTION********************************************************************************
+        
+        // GET: api/VideoSeries/
 
         //public IEnumerable<VideoSeryDto> GetVideoSeries()
         //{
@@ -35,14 +39,14 @@ namespace Alemni.Controllers.Api
 
         //    return db.VideoSeries.Include(v => v.Teacher1 ).Include(v => v.Cours).ToList().Select(Mapper.Map<VideoSery,VideoSeryDto>);
         //}
-        // GET: api/VideoSeries/search/5
+        
         [AllowAnonymous]
         [Route("api/VideoSeries/search/{search}")]
         public IEnumerable<VideoSeriesListItemDto> GetVideoSeries(string search)
         {
             string[] searchWords = search.Split(null);
             var result = from videoSery in db.VideoSeries
-                            where searchWords.Contains(videoSery.Cours.Programm.name)|| searchWords.Contains(videoSery.Cours.name ) || searchWords.Contains( videoSery.Teacher1.AspNetUser.UserName)
+                            where (searchWords.Contains(videoSery.Cours.Programm.name)|| searchWords.Contains(videoSery.Cours.name ) || searchWords.Contains( videoSery.Teacher1.AspNetUser.UserName)) && videoSery.approved == true
                          select (new VideoSeriesListItemDto
                          {
                              Id = videoSery.Id, name = videoSery.name,
@@ -55,23 +59,16 @@ namespace Alemni.Controllers.Api
                              approved = videoSery.approved,
                              duration = videoSery.duration,
                              seryimage = videoSery.seryimage
-
-
                          });
-          
-
+         
             return result;
         }
         [Route("api/VideoSeries/MyVideoSeries")]
         [HttpGet]
         public async Task<List<VideoSeriesListItemDto>> MyVideoSeries()
-        {
-           
-            
+        {                    
             var currentUserId = User.Identity.GetUserId();
-
             String student = currentUserId;
-
             var result =  await db.Transactions.Where(x => (x.student == student)).Select(item => new VideoSeriesListItemDto
             {
                 Id = item.VideoSery.Id,
@@ -94,8 +91,35 @@ namespace Alemni.Controllers.Api
 
             return result;
         }
-        // GET: api/VideoSeries/5   
+        [Route("api/VideoSeries/VideoSeriesICreated")]
+        [HttpGet]
+        public async Task<List<VideoSeriesICreadteListItemDto>> VideoSeriesICreated()
+        {
 
+
+            var currentUserId = User.Identity.GetUserId();
+
+            String teacher = currentUserId;
+            decimal margin = 0.25M;
+
+            var result = await db.VideoSeries.Where(x => (x.teacher == teacher)).Select(item => new VideoSeriesICreadteListItemDto()
+            {
+                Id = item.Id,
+                name = item.name,
+                price= item.price,
+                profit = item.Transactions.Select(p=> p.payment *margin).Sum(),
+                enrollments = item.enrollments,
+                views = item.views,
+                approved = item.approved,
+                
+             
+    
+
+            }).ToListAsync();
+
+            return result;
+        }
+    
         public  VideoSeryViewDto GetVideoSery(int id)
         {
             var videoSeryViewDto =( from videoSery in db.VideoSeries
@@ -127,21 +151,67 @@ namespace Alemni.Controllers.Api
             return videoSeryViewDto;
         }
 
-        // PUT: api/VideoSeries/5
+        // PUT: api/VideoSeries/5*******************************************************************************
+        [HttpPut]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutVideoSery(int id, VideoSery videoSery)
+        public async Task<IHttpActionResult> PutVideoSery(VideoSeriesICreadteListItemDto videoSeryListItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != videoSery.Id)
+            var v = (from videoSery in db.VideoSeries
+                     where videoSery.Id == videoSeryListItem.Id
+                     select videoSery).First();
+            if (videoSeryListItem.Id != v.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(videoSery).State = EntityState.Modified;
+            v.price = videoSeryListItem.price;
+            v.approved = videoSeryListItem.approved;
+
+            db.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VideoSeryExists(videoSeryListItem.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        //PATCH: api/VideoSeries/5
+
+        [HttpPatch]
+        [ResponseType(typeof(void))]
+
+        public async Task<IHttpActionResult> Patch(int id, JsonPatchDocument<VideoSeriesICreatedPatchDto> patch)
+        {
+            
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            var v = (from videoSery in db.VideoSeries
+                where videoSery.Id == id
+                select videoSery).First();
+          //  patch.ApplyUpdatesTo(v);
+
 
             try
             {
@@ -158,6 +228,7 @@ namespace Alemni.Controllers.Api
                     throw;
                 }
             }
+
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -192,8 +263,9 @@ namespace Alemni.Controllers.Api
             return CreatedAtRoute("DefaultApi", new { id = videoSery.Id }, videoSery);
         }
 
-        // DELETE: api/VideoSeries/5
-        [ResponseType(typeof(VideoSery))]
+
+    // DELETE: api/VideoSeries/5
+    [ResponseType(typeof(VideoSery))]
         public async Task<IHttpActionResult> DeleteVideoSery(int id)
         {
             VideoSery videoSery = await db.VideoSeries.FindAsync(id);

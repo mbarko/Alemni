@@ -7,8 +7,8 @@
 
 
 <section>
-    <h2>My Courses</h2>
-    <h4>View your video series </h4>
+    <h2> <i class='ion-ios-videocam-outline'></i>&nbsp;&nbsp;My Creations </h2>
+    <h4>View your video serie creations!</h4>
 </section>
 <hr>
 
@@ -17,49 +17,215 @@
 
 
 
-<table class=" table table-bordered table-hover responsive" id="courses"><thead><tr><th>Course Name</th><th>Start Date</th><th>End Date</th></tr></thead><tbody></tbody></table>
+<table class=" table table-bordered table-hover responsive" id="courses">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Price</th>
+            <th>My Profit</th>
+            <th>Searchable On 3lemny</th>
+            <th>Enrollments</th>
+            <th >Views</th>
+            <th>Go To Page</th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 <div class="quarter_page">&nbsp;</div>
 
 @section scripts
 {
     <script>
-            $(document)
-                .ready(function () {
-                    $("#courses")
+        $(document)
+            .ready(function() {
+                    var table = $("#courses")
                         .DataTable({
-                            "bAutoWidth": false, "bLengthChange": false,
-                            "bFilter": true,
-                            ajax: {
-                                url: "/api/VideoSeries/MyVideoSeries",
-                                dataSrc: ""
-                            },
-                            columns: [
-                                {
-                                    data: "name",
-                                    render: function (data, type, VideoSery) {
-                                        return data;
-                                    }
+                                "bAutoWidth": false,
+                                "bLengthChange": false,
+                                "bFilter": true,
+                                ajax: {
+                                    url: "/api/VideoSeries/VideoSeriesICreated",
+                                    dataSrc: ""
+                                }, language: {
+                                    searchPlaceholder: "Subjects & Tutors"
                                 },
-                                {
-                                    data: "startdate",
-                                    sType: "date",
-                                    render: function(data, type, VideoSery) {
-                                        return data;
-                                    }
+                                columns: [
+                                    {
+                                        data: "name",
+                                        render: function(data, type, VideoSery) {
+                                            return data;
+                                        }
+                                    },
+                                    {
+                                        data: "price",
+                                        sType: "date",
+                                        render: function(data, type, VideoSery) {
+                                            return "<form id = myForm><div class=\"form-group\">\r\n  " +
+                                                " <div class=\"input-group\">\r\n   " +
+                                                " <span class=\"input-group-addon\">L.E.</span>\r\n   " +
+                                           
+                                                " <input type=\"number\" min=\"400\" step=\"1\"class=\"form-control\"  placeholder=\"" + data + "\">\r\n " +
+                                                "   <span class=\"input-group-btn\">\r\n " +
+                                                "     <button id=\"pricebtn\"  class=\"btn btn-default\" type=\"button\">Change</button>\r\n  " +
+                                                "  </span>\r\n  </div></div></form>";
+                                        }
 
-                                },
-                                {
-                                    data: "enddate",
-                                    sType: "date",
-                                    render: function (data, type, VideoSery) {
-                                        return data;
-                                    }
-                                }
-                            ]
+                                    },
+                                    {
+                                        data: "profit",
+                                        sType: "date",
+                                        render: function(data, type, VideoSery) {
+                                            return "<div style='color:#38b44a'>" + data + " L.E.</div>";
+                                        }
+                                    },
+                                    {
+                                        data: "approved",
+                                        render: function (data, type, VideoSery) {
 
+                                            var span;
+                                            if (data)
+                                                span = " <span> <i class='ion-eye'> </i>Searchable <span class=\"caret\"></span>\r\n   ";
+                                            else span = " <span> <i class='ion-eye-disabled'> </i>Hidden <span class=\"caret\"></span>\r\n   ";
+
+                                            return "   <a class=\"dropdown-toggle\"" +
+                                                " data-toggle=\"dropdown\" href=\"#\" aria-expanded=\"true\">\r\n    "
+                                                +span
+                                                +
+                                                " </a>\r\n    <ul class=\"dropdown-menu\">\r\n   " +
+                                                "   <li value=\"searchable\"><a href=\"#dropdown1\" data-toggle=\"tab\"> <i class='ion-eye'> </i>&nbsp;&nbsp;Searchable</a></li>\r\n  " +
+                                                "    <li class=\"divider\"></li>\r\n      <li value=\"hidden\"><a href=\"#dropdown2\" data-toggle=\"tab\"><i class='ion-eye-disabled'> </i>&nbsp;&nbsp;Hidden</a></li>\r\n " +
+                                                "   </ul>";
+                                        }
+                                    },
+                                    {
+                                        data: "enrollments",
+                                        sType: "date",
+                                        render: function(data, type, VideoSery) {
+                                            return data;
+                                        }
+
+                                    },
+                                    {
+                                        data: "views",
+                                        sType: "date",
+                                        render: function(data, type, VideoSery) {
+                                            return "n/a";
+                                        }
+                                    },
+                                    {
+                                        data: "Id",
+                                        sType: "date",
+                                        render: function(data, type, VideoSery) {
+                                            return "<a href=\"/VideoSeries/VideoSery/" + data + "\">Go</a> ";
+                                        }
+                                    }
+                                ]
+
+                            }
+                        );
+
+                    $("#courses")
+                        .on("click",
+                            ".open li",
+                            function() {
+                                var li = $(this);
+                                var action = li.attr("value");
+                                bootbox.confirm("Are you sure you want to make your video series " + action + "?",
+                                    function(result) {
+                                        var videoSeryListItem = table.row(li.parents("tr")).data();
+                                        if (action == "searchable")
+                                            videoSeryListItem.approved = true;
+                                        else {
+                                            videoSeryListItem.approved = false;
+                                        }
+                                        if (result) {
+                                            $.ajax({
+                                                url: '/api/VideoSeries',
+                                                type: "PUT",
+                                                Method: "PUT",
+                                                data: 
+                                             JSON.stringify(videoSeryListItem) ,
+
+                                                contentType: "application/json",
+
+
+                                                success: function(data, textStatus) {
+
+                                                   
+                                                    {
+                                                       
+                                                                table.ajax.reload();
+
+                                                           
+
+
+                                                    }
+                                                },
+                                                error: function(xhr, error, textStatus) {
+                                                    bootbox.alert('Update Failed :(');
+                                                },
+
+                                            });
+                                        }
+                                    });
+                            });
+
+                    $("#courses")
+                        .on("click",
+                            "button", function () {
+                        var button = $(this);
+                        var newPrice = button.parents("tr").find("input")[0].value;
+                                var $myForm = $('#myForm');
+                        if (!$myForm[0].checkValidity() || (newPrice.toString() =="")) {
+                           
+                            {
+                                // If the form is invalid, submit it. The form won't actually submit;
+                                // this will just cause the browser to display the native HTML5 error messages.
+                                bootbox.alert('Price must be a  whole number & greater than 399 L.E. .');
+                                return;
+                            }
                         }
-                    );
-                });
+                        bootbox.confirm("Are you sure you want to change the price to <strong>" + newPrice + " L.E. </strong> ?",
+                            function(result) {
+                                var videoSeryListItem = table.row(button.parents("tr")).data();
+                                videoSeryListItem.price= newPrice;
+                                if (result) {
+                                    $.ajax({
+                                        url: '/api/VideoSeries',
+                                        type: "PUT",
+                                        Method: "PUT",
+                                        data: 
+                                     JSON.stringify(videoSeryListItem) ,
+
+                                        contentType: "application/json",
+
+
+                                        success: function(data, textStatus) {
+
+                                                   
+                                            {
+                                                       
+                                                table.ajax.reload();
+
+                                                           
+
+
+                                            }
+                                        },
+                                        error: function(xhr, error, textStatus) {
+                                            bootbox.alert('Update Failed :(');
+                                        },
+
+                                    });
+                                }
+                            });
+                    
+                    });
+
+
+                }
+            );
 
     </script>
 }

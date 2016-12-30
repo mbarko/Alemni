@@ -130,18 +130,26 @@
              $.ajax({
                  url: '/api/Transactions',
                  type: 'POST',
-                 dataType:'html',
+
                  data:
                  {
                      id: @Model.VideoSery.Id,
 
                  },
-                 success: function (data) {
-                     
-                     window.location = "/VideoSeries/VideoSery/"+@Model.VideoSery.Id;
+                 success: function(data, textStatus) {
+                     if (data != null)
+                         if (data.Message == "Authorization has been denied for this request.") {
+                             window.location = "/Account/login";
+                         return ;}
+
+                     window.location = "/VideoSeries/VideoSery/" + @Model.VideoSery.Id;
                  },
-                 error: function(xhr, error) {
+                 error: function(xhr, error, textStatus) {
                      alert('Transaction Failed :(');
+                 },
+                 401: function(data) {
+                     alert('401: Unauthenticated');
+                     // Handle the 401 error here.
                  }
              });
          });
