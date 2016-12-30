@@ -23,7 +23,7 @@
             <div class="container VideoSery_summaryIcons">
 
                 <div class="col-sm-3 col-lg-3 ">
-                    <h5><i class="ion-clock "></i> Duration: @Model.VideoSery.duration hours</h5>
+                    <h5><i class="ion-clock "></i> : @Model.VideoSery.duration hours</h5>
                 </div>
                 <div class="col-sm-3 col-lg-3 ">
                     <h5><i class="ion-ios-book "></i> Program: @Model.VideoSery.programmName </h5>
@@ -32,7 +32,7 @@
                     <h5><i class="ion-play "></i> Lectures: @Model.VideoSery.videos </h5>
                 </div>
                 <div class="col-sm-3 col-lg-3 ">
-                    <h5><i class="ion-ios-people"></i> Enrollments: @Model.VideoSery.enrollments </h5>
+                    <h5 id ="VideoSery_enrollments"><i class="ion-ios-people"></i> Enrollments: @Model.VideoSery.enrollments </h5>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
 
                             <a href="#" class="list-group-item">
 
-                                <span class="badge">@video.duration</span>
+                                <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
                                 @if (video.paid)
                                 {
                                     <i style="display: @display" class="ion-android-lock">&nbsp;</i>
@@ -139,7 +139,7 @@
                  success: function(data, textStatus) {
                      if (data != null)
                          if (data.Message == "Authorization has been denied for this request.") {
-                             window.location = "/Account/login";
+                             window.location = "/Account/login?ReturnUrl=/VideoSeries/VideoSery/"+@Model.VideoSery.Id;
                          return ;}
 
                      window.location = "/VideoSeries/VideoSery/" + @Model.VideoSery.Id;

@@ -55,7 +55,7 @@ namespace Alemni.Controllers
             }
             else
             {
-                ViewBag.search = "";
+                ViewBag.search = "nothing";
             }
             return View();
         }

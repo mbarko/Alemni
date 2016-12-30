@@ -17,7 +17,7 @@
 
 
 
-<table class=" table table-bordered table-hover responsive" id="courses">
+<table class=" table table-bordered table-hover responsive" id="coursesICreated">
     <thead>
         <tr>
             <th>Course Name</th>
@@ -39,7 +39,7 @@
     <script>
         $(document)
             .ready(function() {
-                    var table = $("#courses")
+                    var table = $("#coursesICreated")
                         .DataTable({
                                 "bAutoWidth": false,
                                 "bLengthChange": false,
@@ -125,7 +125,7 @@
                             }
                         );
 
-                    $("#courses")
+                    $("#coursesICreated")
                         .on("click",
                             ".open li",
                             function() {
@@ -171,7 +171,7 @@
                                     });
                             });
 
-                    $("#courses")
+                    $("#coursesICreated")
                         .on("click",
                             "button", function () {
                         var button = $(this);

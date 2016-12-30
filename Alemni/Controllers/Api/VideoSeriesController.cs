@@ -44,7 +44,10 @@ namespace Alemni.Controllers.Api
         [Route("api/VideoSeries/search/{search}")]
         public IEnumerable<VideoSeriesListItemDto> GetVideoSeries(string search)
         {
+            if (search.IsNullOrWhiteSpace() || search == "")
+                return null;
             string[] searchWords = search.Split(null);
+          
             var result = from videoSery in db.VideoSeries
                             where (searchWords.Contains(videoSery.Cours.Programm.name)|| searchWords.Contains(videoSery.Cours.name ) || searchWords.Contains( videoSery.Teacher1.AspNetUser.UserName)) && videoSery.approved == true
                          select (new VideoSeriesListItemDto

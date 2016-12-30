@@ -34,8 +34,11 @@ body {
     visibility: visible;
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
+
+@media (min-width: 768px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
 }
 /*MYCODE*/
 .navbar li > a {
@@ -68,15 +71,40 @@ body {
     top: 11px;
     left: -6px;
 }
+
+
+
 @media (min-width: 768px) {
     .navbar-right {
         float: right !important;
         margin-right: auto;
     }
+
     .navbar-collapse {
-    width: auto;
-    min-width: 500px;
-  
+        width: auto;
+        min-width: 500px;
+    }
+}
+@media (max-width: 767px) {
+    .navbar-inverse .in {
+        background-color: rgb(0, 150, 136);
+    }
+
+    .collapsing {
+        background-color: rgb(0, 150, 136);
+    }
+
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+        color: #ffffff;
+        background-color: rgb(0, 150, 136);
+    }
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color:  rgb(0, 150, 136);
+    color: #ffffff;
+}
+    .navbar-inverse .navbar-nav > li > #happy_btn:hover {
+     background-color:  rgb(0, 150, 136);
+}
 }
 /*CODEPEN*/
 /*Image zoom on hover*/
@@ -323,6 +351,50 @@ th {
     color: #212121;
     border-bottom: 0px;
 }
+#courses .sorting_1 {
+         min-width: 380px;
+}
+       .row{
+             margin-right: 0px;
+        
+    }
+             #courses .dataTable_videoSeryInfo {
+          min-width: 250px;
+       
+   
+    }
+                    #courses ul li {
+           max-height: 50px;
+    
+    }
+@media (max-width: 500px) {
+   #courses .sorting_1 {
+        min-width: 200px;
+       margin: auto;
+    
+    }
+
+      #courses .image,  #courses .image-box{
+          padding: 2px;
+          min-width: 90px;
+          display: none;
+        
+    }
+
+         .navbar-toggle{
+             margin-right: 20px;
+        
+    }
+
+      #courses .dataTable_videoSeryInfo {
+          min-width: 250px;
+       
+   
+    }
+        #courses .dataTable_leftCorner {
+           
+    }
+}
 
 .table > thead > tr > th {
     background: transparent;
@@ -441,7 +513,7 @@ th {
     }
 
 .VideoSery_summaryTab {
-    top: 41vh;
+    top: 46vh;
     background-color: #f5f5f5;
     position: relative;
     right: 0;
@@ -449,18 +521,42 @@ th {
 }
 
 .VideoSery_summaryIcons {
-    margin-left: 10%;
+
     padding: 10px;
+    max-width: 100% !important;
 }
 
 .VideoSery_body {
-    margin-top: 39vh;
+    margin-top: 43vh;
 }
 
+#VideoSery_enrollments {
+    margin-right: 0px;
+    padding-right: 0px;
+   
+}
 .VideoSery_video {
     background-color: #B2dfdb;
     height: 250px;
 }
+
+@media (max-width: 768px) {
+.VideoSery_body {
+    margin-top: 52vh;
+}
+
+
+}
+@media (max-width: 500px) {
+
+.VideoSery_video {
+    background-color: #B2dfdb;
+    height: 180px;
+}
+
+}
+
+
 
 .VideoSery_sidebar-col {
 }
@@ -487,3 +583,4 @@ td input {
     min-width: 80px;
     max-width: 100px;
 }
+
