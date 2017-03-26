@@ -10,17 +10,19 @@ namespace Alemni.Models.Dtos.VideoSeriesICreatedDtos
     public class VideoSeriesICreadteListItemDto
     {
         public int Id { get; set; }
-        public string name { get; set; }
+        public int VideoSeryId { get; set; }
+        public string VideoSeryName { get; set; }
         
         [Required(ErrorMessage = "Price has to be greater than 399 L.E. & rounded")]
         [Range(400, int.MaxValue, ErrorMessage = "Price has to be greater than 399 L.E. & rounded")]
-        public int price { get; set; }
-        public int views { get; set; }
-        public int enrollments { get; set; }
+        public int Price { get; set; }
+        public int Views { get; set; }
+        public int Enrollments { get; set; }
+        public bool Approved { get; set; }
+        public string SectionName { get; set; }
+        public int LocalOrder { get; set; }
 
-        public bool approved { get; set; }
-
-        public decimal profit { get; set; }
+        public decimal Profit { get; set; }
 
       
 

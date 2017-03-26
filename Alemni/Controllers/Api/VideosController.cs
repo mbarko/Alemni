@@ -21,10 +21,11 @@ namespace Alemni.Controllers.Api
         private EvilGenius0Entities db = new EvilGenius0Entities();
 
         // GET: api/Videos
-        //public IQueryable<Video> GetVideos()
-        //{
-        //    return db.Videos;
-        //}
+        public IQueryable<Video> GetVideos()
+        {
+            return db.Videos;
+        }
+        //GET: api/Videos/search/{id}
         [Route("api/Videos/search/{id}")]
         public async Task<IEnumerable<VideoDto>> GetVideos(int id)
         {

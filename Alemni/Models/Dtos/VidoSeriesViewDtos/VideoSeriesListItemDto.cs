@@ -14,7 +14,8 @@ namespace Alemni.Models.Dtos.VidoSeriesViewDtos
         public int views { get; set; }
         public int enrollments { get; set; }
         public int videos { get; set; }
- 
+        
+
         public String teacherName { get; set; }
         public String programmName { get; set; }
 

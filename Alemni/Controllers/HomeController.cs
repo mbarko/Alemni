@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alemni.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,5 +28,39 @@ namespace Alemni.Controllers
 
             return View();
         }
+
+        // GET: Program
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("Program/{programName}")]
+        [System.Web.Http.AllowAnonymous]
+        public ActionResult Program(string programName)
+        {
+            var TeachersControllerApi = new Api.TeachersController();
+       
+
+            ViewBag.NavBarType = "Image Nav Bar";
+
+            if (!String.IsNullOrEmpty(programName))
+            {
+
+                ViewBag.search = programName;
+               
+
+            }
+            else
+            {
+   
+                ViewBag.programName = "non specified ";
+            }
+
+
+            var viewModel = TeachersControllerApi.GetProgramViewModel(programName);
+            return View(viewModel);
+
+        }
+
+
+
+
     }
 }

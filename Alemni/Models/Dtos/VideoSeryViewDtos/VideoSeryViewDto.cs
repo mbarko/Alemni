@@ -25,9 +25,16 @@ namespace Alemni.Models.Dtos.VideoSeryViewDtos
         public String teacherCredentials { get; set; }
         public String teacherEmail { get; set; }
         public String teacherPhone{ get; set; }
+        public String teacherImage { get; set; }
         public String programmName { get; set; }
 
 
-     
+        public String teacherFirstName { get; set; }
+        public String teacherLastName { get; set; }
+        public String Teachertitle { get; set; }
+
+
+
+
     }
 }

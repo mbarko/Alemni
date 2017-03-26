@@ -8,94 +8,139 @@
 
 @{
     var display = @Model.State == true ? "none" : "visible";
-   
+
 }
 
 <div id="VideoSeryPage">
-    <div class="jumbotron videoSery_jumbotron">
-        <h1>MathHl</h1>
-        <button style="display: @display" type="button" id="transaction_btn" class="btn btn_videoSery">Take This Course</button>
-    </div>
 
-    <div class="VideoSery_image" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)) ,url(https://3lemnypics.blob.core.windows.net/videoserymainpic/TestPic.jpg);">
-        <div class="VideoSery_summaryTab">
 
-            <div class="container VideoSery_summaryIcons">
 
-                <div class="col-sm-3 col-lg-3 ">
-                    <h5><i class="ion-clock "></i> : @Model.VideoSery.duration hours</h5>
-                </div>
-                <div class="col-sm-3 col-lg-3 ">
-                    <h5><i class="ion-ios-book "></i> Program: @Model.VideoSery.programmName </h5>
-                </div>
-                <div class="col-sm-3 col-lg-3 ">
-                    <h5><i class="ion-play "></i> Lectures: @Model.VideoSery.videos </h5>
-                </div>
-                <div class="col-sm-3 col-lg-3 ">
-                    <h5 id ="VideoSery_enrollments"><i class="ion-ios-people"></i> Enrollments: @Model.VideoSery.enrollments </h5>
-                </div>
-            </div>
-        </div>
 
-    </div>
+
     <div class="VideoSery_body">
-        <a class=" col-md-2  sm-no-margin  white-space">&nbsp;</a>
-        <div class="col-xs-12 col-md-6 col-xl-9 sm-no-margin  white-space"><div class="VideoSery_video">&nbsp;</div></div>
-        <div class="col-xs-12 col-md-4 col-xl-3 VideoSery_sidebar-col white-space">
+
+        <div class="col-xs-12 col-lg-9 col-md-6 col-xl-9 sm-no-margin  white-space">
+            <div class="teacher_box">
+                <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@Model.VideoSery.teacherImage)" value="@Model.VideoSery.teacher" class="col-lg-offset-5 teacher_list_button teacher_link " data-toggle="tooltip" data-placement="right"
+                     title="">&nbsp;</div>
+
+                <a class="text_theme" href="../../teacher/@Model.VideoSery.teacher">
+                    @Model.VideoSery.Teachertitle
+                    @Model.VideoSery.teacherFirstName @Model.VideoSery.teacherLastName
+                </a>
+            </div>
+
+            <div class="VideoSery_video">
+                <video id="azuremediaplayer" class="azuremediaplayer amp-default-skin amp-big-play-centered" tabindex="0"></video>
+            </div>
+            <hr />
+
+            <div id="lecture_header">
+                <p class="text_theme">@Model.VideoSery.name</p>
+              
+                    <h1 id="lecture_header_head">@Model.Videos.FirstOrDefault().name</h1>
+               
+</div>
+
+        </div>
+        <div class="col-xs-12 col-lg-3 col-md-4 col-xl-3 VideoSery_sidebar-col white-space">
             <ul class="nav nav-tabs">
 
                 <li class="active"><a href="#lectures" data-toggle="tab" aria-expanded="true">Lectures</a></li>
-                <li class=""><a href="#overview" data-toggle="tab" aria-expanded="false">Overview</a></li>
-                @*<li class="disabled"><a>Disabled</a></li>*@
-                <li class="dropdown ">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
-                        Tutor <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">Contact</a></li>
-                        <li class="divider"></li>
-                        <li class=""><a href="#dropdown2" data-toggle="tab" aria-expanded="false">Qualifications</a></li>
-                    </ul>
-                </li>
+                <li class=""><a id="overview_tab_button"href="#overview" data-toggle="tab" aria-expanded="false">Overview</a></li>
+
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="lectures">
-                    <ul>
-                        @if (@Model.State) {
-                        foreach (var video in @Model.Videos)
+                <div class="tab-pane fade active in" >
+                    <ul class="lectures" >
+
+
+
+                        @foreach (var section in @Model.Sections)
                         {
+                            var sectionId = section.Id;
+                            var price = section.price;
+                            var sectionName = section.name;
+                            var sectionVideos = @Model.Videos.Where(v => v.section == section.Id);
 
-                            <a href="#" class="list-group-item">
+                            <div></div>
 
-                                <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
-                                @if (video.paid)
+                            if (@section.state)
+                            {
+                                <a href="#" class="list-group-item" style="height:100px">
+
+                                    <h4 class="list-group-item-heading">@sectionName </h4>
+                                    <br />
+                                    <span class="badge badge_joined">Joined</span>
+
+                                </a>
+                                foreach (var video in @sectionVideos)
                                 {
-                                    <i style="display: @display" class="ion-android-lock">&nbsp;</i>
-                                }
-                                @video.name
-                            </a>
+                                    if (video.section == section.Id)
+                                    {
+                                        <a id="v_@video.Id" overview="@video.overview" href="#" name="@video.name" class="list-group-item video_item" value="@video.URL">
 
+                                            <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
+
+
+
+                                            @video.name
+                                        </a>
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                <a href="#" class="list-group-item" style="height:100px">
+
+                                    <h4 class="transaction_btn list-group-item-heading" price="@price" sectionId="@sectionId">
+                                        @sectionName
+                                        <br />
+                                        <br />
+                                        <span class="badge badge_take_class">Join for @price L.E</span>
+                                        <br />
+                                       
+                                </h4>
+                                    
+
+                                </a>
+                                foreach (var video in @sectionVideos)
+                                {
+                                    if (video.paid)
+                                    {
+                                        <a id="v_@video.Id" overview="@video.overview" name="@video.name" href="#" class="list-group-item">
+
+                                            <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
+
+                                            <i style="display: @display" class="ion-android-lock">&nbsp;</i>
+
+                                            @video.name
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a id="v_@video.Id" overview="@video.overview" name="@video.name" value="@video.URL" href="#" class="list-group-item">
+
+                                            <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
+
+
+
+                                            @video.name
+                                        </a>
+                                    }
+                                }
                             }
                         }
-                        else { foreach (var video in @Model.VideosLocked)
-                            {
 
-                                <a href="#" class="list-group-item">
 
-                                    <span class="badge">@video.duration</span>
-                                    @if (video.paid)
-                                    {
-                                        <i style="display: @display" class="ion-android-lock">&nbsp;</i>
-                                    }
-                                    @video.name
-                                </a>
-
-                            }}
                     </ul>
+
+
 
                 </div>
                 <div class="tab-pane fade" id="overview">
-                    <p>@Model.VideoSery.overview </p>
+                 
                 </div>
                 <div class="tab-pane fade" id="dropdown1">
                     <div class="list-group">
@@ -114,43 +159,117 @@
                 </div>
             </div>
         </div>
-        <a class=" col-md-0  sm-no-margin  white-space">&nbsp;</a>
+        <a class="col-md-0 sm-no-margin white-space">&nbsp;</a>
 
 
     </div>
-
+    <div id="comments-container">s</div>
     <div class="quarter_page">&nbsp;</div>
 </div>
 
 @section scripts
-{<script>
+{
+    <script>
+        $(document).ready(function () {  $('#comments-container').comments({
+    profilePictureURL: 'https://app.viima.com/static/media/user_profiles/user-icon.png',
+    getComments: function(success, error) {
+        var commentsArray = [{
+            id: 1,
+            created: '2015-10-01',
+            content: 'Lorem ipsum dolort sit amet',
+            fullname: 'Simon Powell',
+            upvote_count: 2,
+            user_has_upvoted: false
+        }];
+        success(commentsArray);
 
-     $('#transaction_btn')
-         .click(function() {
-             $.ajax({
-                 url: '/api/Transactions',
-                 type: 'POST',
+    },
 
-                 data:
-                 {
-                     id: @Model.VideoSery.Id,
+    postComment: function(commentJSON, success, error) {
+        $.ajax({
+            type: 'post',
+            url: '/api/comments/',
+            data: commentJSON,
+            success: function(comment) {
+                success(comment)
+            },
+            error: error
+        });
+    }
+                 });});
+        var currentVideoDisplayed = document.getElementById("v_"+@Model.Videos.FirstOrDefault().Id);
+        $('.transaction_btn')
+            .click(function() {
+                var payment =$(this).attr("price");
+                var section =$(this).attr("sectionId");
+                $.ajax({
+                    url: '/api/Transactions',
+                    type: 'POST',
+                    
+                    data:
+                    {
+                        videoseries: @Model.VideoSery.Id,
+                        section: section,
+                        payment:payment
 
-                 },
-                 success: function(data, textStatus) {
-                     if (data != null)
-                         if (data.Message == "Authorization has been denied for this request.") {
-                             window.location = "/Account/login?ReturnUrl=/VideoSeries/VideoSery/"+@Model.VideoSery.Id;
-                         return ;}
+                    },
+                    success: function(data, textStatus) {
+                        if (data != null)
+                            if (data.Message == "Authorization has been denied for this request.") {
+                                window.location = "/Account/login?ReturnUrl=/VideoSeries/VideoSery/"+@Model.VideoSery.Id;
+                                return ;}
 
-                     window.location = "/VideoSeries/VideoSery/" + @Model.VideoSery.Id;
-                 },
-                 error: function(xhr, error, textStatus) {
-                     alert('Transaction Failed :(');
-                 },
-                 401: function(data) {
-                     alert('401: Unauthenticated');
-                     // Handle the 401 error here.
-                 }
-             });
-         });
- </script>}
+                        window.location = "/VideoSeries/VideoSery/" + @Model.VideoSery.Id;
+                    },
+                    error: function(xhr, error, textStatus) {
+                        alert('Transaction Failed :(');
+                    },
+                    401: function(data) {
+                        alert('401: Unauthenticated');
+                        // Handle the 401 error here.
+                    }
+                });
+            });
+
+        var myOptions = {
+            "nativeControlsForTouch": true,
+            "logo": { "enabled": false },
+            controls: true,
+            autoplay: false,
+            width: "100%",
+            height: "100%",
+
+
+        }
+        myPlayer = amp("azuremediaplayer", myOptions);
+       
+        var source = "@Model.Videos.FirstOrDefault().URL";
+   
+        myPlayer.src([
+                {
+                    "src":  source,
+                    "type": "application/vnd.ms-sstr+xml"
+                }
+        ]);
+
+        $('.video_item')
+           .click(function() {
+               currentVideoDisplayed = $(this);
+               var source =  $(this).attr("value");
+               var name=  $(this).attr("name");
+               document.getElementById("lecture_header_head").innerHTML = name;
+               myPlayer.src([
+                   {
+                       "src":  source,
+                       "type": "application/vnd.ms-sstr+xml"
+                   }
+               ])});
+        $('.teacher_list_button').click(function () {
+            var search = $(this).attr("value");
+            location.href = "../../Teacher/"+'@Model.VideoSery.teacher' });
+        $('#overview_tab_button')
+          .click(function() {
+              
+              document.getElementById("overview").innerHTML = "<p>"+currentVideoDisplayed.attr("overview")+"</p>";
+              });
+    </script>}

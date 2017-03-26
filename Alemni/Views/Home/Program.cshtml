@@ -1,0 +1,94 @@
+﻿@model Alemni.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="program_title" style="background-image:linear-gradient(rgba(18, 151, 147,0.7),rgba(18, 151, 147,0.7)),
+     url(@Model.ImageURL); ">
+
+    <h1 class="">@ViewBag.search</h1>
+
+
+</div>
+
+
+
+
+
+<div class="subject_list">
+    <h4><i class="ion-ios-book-outline"></i>&nbsp;&nbsp;Subjects</h4>
+    <hr>
+    <ul class="bxslider list-unstyled"style="visibility: hidden;">
+        @foreach (var cours in @Model.Courses)
+        {
+            <li class="">
+                <div class="subject_list_button">hi</div>
+                <a href="../SubjectVideoSeries/@cours.name">@cours.name</a>
+    </li>
+
+        }
+
+    </ul>
+</div>
+
+<div class="teacher_list">
+    <h4><i class="ion-ios-glasses-outline"></i>&nbsp;&nbsp;Teachers</h4>
+    <hr>
+    <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@Model.Teachers.FirstOrDefault().teacherimage)" value="@Model.Teachers.FirstOrDefault().id" class="teacher_list_button" data-toggle="tooltip" data-placement="right"
+     title="@Model.Teachers.FirstOrDefault().title  @Model.Teachers.FirstOrDefault().firstname  @Model.Teachers.FirstOrDefault().lastname">&nbsp;</div>
+
+
+    <ul class="list-unstyled">
+
+        @if (Model.Teachers.Count() > 0)
+        {
+            foreach (var teacher in @Model.Teachers.Skip(1))
+            {
+
+                <li class="col-lg-4 col-md-4">
+                    <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@teacher.teacherimage)" value="@teacher.id" class="teacher_list_button" data-toggle="tooltip" data-placement="right"
+                         title="@teacher.title  @teacher.firstname  @teacher.lastname">&nbsp;</div>
+                </li>
+
+            }
+        }
+
+
+
+    </ul>
+</div>
+
+<div class="quarter_page">&nbsp;</div>
+
+
+
+@section scripts
+{
+    <script>
+        $('.bxslider').bxSlider({
+            minSlides: 3,
+            maxSlides: 4,
+            slideWidth: 250,
+            slideMargin: 10,
+            
+            controls:true,
+            onSliderLoad: function () {
+                $(".bxslider").css("visibility", "visible");
+            }
+        });
+        $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+        });
+
+        $('.teacher_list_button')
+   .click(function () {
+       var search = $(this).attr("value");
+       location.href = "../teacher/"+search
+   });
+
+    </script>}
+
+
+

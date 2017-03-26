@@ -44,5 +44,7 @@ namespace Alemni
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<VideoSery> VideoSeries { get; set; }
+        public virtual DbSet<Section> Sections { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
     }
 }

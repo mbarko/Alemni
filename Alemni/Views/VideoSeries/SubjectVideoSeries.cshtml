@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "SubjectVideoSeries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="subject_image" style="background-image: linear-gradient(rgba(0, 0, 0,0.5),rgba(0, 0, 0,0.5))
+,url('https://3lemnyimages.blob.core.windows.net/coverphotos/rsz_it.jpg');">
+
+    <div class="jumbotron videoSery_jumbotron">
+       
+        <h1 class="">@ViewBag.search</h1>
+    </div>
+    <div class="subject_summaryTab">
+
+        <div class="container subject summaryIcons">
+
+            <div class="col-sm-3 col-lg-3 ">
+                <h5><i class="ion-clock "></i> :  hours</h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5><i class="ion-ios-book "></i> Program:  </h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5><i class="ion-play "></i> Lectures:  </h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5 id="subject_enrollments"><i class="ion-ios-people"></i> Enrollments:   </h5>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <div class="col-lg-10 col-lg-offset-1 " id="subject_courses">
+        <table class=" table display  table-hover responsive " id="courses"><thead><tr><th class="thlead">Courses</th><th class="secondary_head">Enrollments</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="quarter_page">&nbsp;</div>
+
+    @section scripts
+    {
+        <script>
+            $(document)
+                .ready(function () {
+                    $("#courses")
+                        .DataTable({
+                            "bAutoWidth": false, "bLengthChange": false,
+                            "bFilter": true,
+                            ajax: {
+                                url: "/api/VideoSeries/search/@ViewBag.search",
+                                dataSrc: ""
+                            }, language: {
+                                searchPlaceholder: "Tutors"
+                            },
+                            columns: [
+                                {
+                                    data: "name",
+                                    render: function (data, type, VideoSery) {
+                                        return "<div class = '  dataTable_maininfo' onclick='location.href=&apos;/VideoSeries/VideoSery/" +
+                                            VideoSery.Id + "&apos;' >" +
+                                            "<div class='image-box'><div class=' image dataTable_image   ' style =' background-image: url(" +
+                                            VideoSery.seryimage +
+                                            ");'>&nbsp </div></div><div class='  col-lg-7 col-xs-7 col-sm-7 col-md-7 dataTable_videoSeryInfo'><strong>" +
+                                            VideoSery.name +
+                                            "</stong> <h5> " +
+                                            VideoSery.teacherName +
+                                            "</h5>" +
+                                            "<div  ><h5 class='dataTable_leftCorner'><i class='ion-play' ></i> &nbsp&nbsp" +
+                                            VideoSery.videos +
+                                            "   lectures  &nbsp&nbsp <i class='ion-clock' ></i> &nbsp&nbsp" +
+                                            VideoSery.duration + "   hours</h5></div></div>";
+                                    }
+                                },
+                                {
+                                    data: "enrollments",
+                                    render: function (data, type, VideoSery)
+                                    { return "<div class= 'dataTable_secondaryinfo  dataTable_videoSeryInfo' onclick='location.href=&apos;/VideoSeries/VideoSery/" + VideoSery.Id + "&apos;'  > " + data + "  students </div>"; }
+
+                                },
+                                //{
+                                //    data: "price",
+                                //    render: function (data, type, VideoSery)
+                                //    { return "<div class= 'dataTable_secondaryinfo  dataTable_videoSeryInfo' onclick='location.href=&apos;/VideoSeries/VideoSery/" + VideoSery.Id + "&apos;'  > " + data + "  LE </div>"; }
+                                //}
+                            ]
+
+                        }
+                    );
+                });
+
+
+
+        </script>
+    }
+
+
+
+
+
+

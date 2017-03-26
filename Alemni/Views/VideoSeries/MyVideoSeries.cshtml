@@ -17,7 +17,7 @@
 
 
 
-<table class=" table table-stripped table-hover responsive " id="courses"><thead><tr><th class="thlead"></th><th>Start Date</th><th>End Date</th></tr></thead><tbody></tbody></table>
+<table class="table table-stripped table-hover responsive " id="courses"><thead><tr><th class="thlead">Course</th><th>Start Date</th><th>End Date</th></tr></thead><tbody></tbody></table>
 <div class="quarter_page">&nbsp;</div>
 
 @section scripts
@@ -39,36 +39,35 @@
                             },
                             columns: [
                                 {
-                                    data: "name",
-                                    render: function(data, type, VideoSery) {
+                                    data: "VideoSery.name",
+                                    render: function(data, type, My) {
                                         var lockIcon;
-                                        if (VideoSery.active)
+                                        if (My.VideoSery.active)
                                             lockIcon =
                                                 " &nbsp;&nbsp;<i class='ion-unlocked' style='color:#38b44a' ></i>";
                                         else {
                                             lockIcon = " &nbsp;&nbsp;<i class='ion-locked' ></i>";
                                         }
                                         return "<div class = '  dataTable_maininfo' onclick='location.href=&apos;/VideoSeries/VideoSery/" +
-                                            VideoSery.Id +
+                                            My.VideoSery.Id +
                                             "&apos;' >" +
                                             "<div class='image-box'><div class=' image dataTable_image   ' style =' background-image: url(" +
-                                            VideoSery.seryimage +
+                                            My.VideoSery.seryimage +
                                             ");'>&nbsp </div></div><div class='  col-lg-7 col-xs-7 col-sm-7 col-md-7 dataTable_videoSeryInfo'><strong>" +
-                                            VideoSery.name +
+                                            My.VideoSery.name +
                                             "</stong>" +
-                                            lockIcon +
-                                            "<h5> Mr. " +
-                                            VideoSery.teacherName +
+                                            lockIcon + "   <a class='text-success'>"
+                                            + My.Count + " Classes </a> <h5> Mr. " + My.VideoSery.teacherName +
                                             "</h5>" +
                                             "<div  ><h5 class='dataTable_leftCorner'><i class='ion-play' ></i> &nbsp&nbsp" +
-                                            VideoSery.videos +
+                                            My.VideoSery.videos +
                                             "   lectures  &nbsp&nbsp <i class='ion-clock' ></i> &nbsp&nbsp" +
-                                            VideoSery.duration +
+                                            My.VideoSery.duration +
                                             "   hours</h5></div></div>";
                                     }
                                 },
                                 {
-                                    data: "startdate",
+                                    data: "VideoSery.startdate",
                                     sType: "date",
                                     render: function(data, type, VideoSery) {
                                         var javascriptDate = new Date(data);
@@ -82,7 +81,7 @@
 
                                 },
                                 {
-                                    data: "enddate",
+                                    data: "VideoSery.enddate",
                                     sType: "date",
                                     render: function(data, type, VideoSery) {
                                         var javascriptDate = new Date(data);

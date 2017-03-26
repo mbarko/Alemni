@@ -22,6 +22,7 @@ namespace Alemni
     
         public int Id { get; set; }
         public string name { get; set; }
+        public string programpic { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cours> Courses { get; set; }

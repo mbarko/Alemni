@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EvilGenius0Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EvilGenius0Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -97,6 +97,20 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="type" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="created" Type="datetime" Nullable="false" />
+          <Property Name="content" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="fullname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="upvote_count" Type="int" Nullable="false" />
+          <Property Name="user_has_upvoted" Type="bit" Nullable="false" />
+          <Property Name="parent" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="createdByCurrentUser" Type="bit" Nullable="false" />
+          <Property Name="modified" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="Id" />
@@ -111,6 +125,7 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="program" Type="int" Nullable="false" />
+          <Property Name="courseimage" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Programms">
           <Key>
@@ -118,6 +133,19 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="programpic" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="videosery" Type="int" Nullable="false" />
+          <Property Name="localorder" Type="int" Nullable="false" />
+          <Property Name="views" Type="int" />
+          <Property Name="enrollments" Type="int" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -134,12 +162,18 @@
           <Property Name="collectiontype" Type="int" Nullable="false" />
           <Property Name="photo" Type="varbinary(max)" />
           <Property Name="credentials" Type="varchar(max)" />
+          <Property Name="teacherimage" Type="varchar" MaxLength="255" />
+          <Property Name="firstname" Type="nvarchar" MaxLength="50" />
+          <Property Name="lastname" Type="nvarchar" MaxLength="50" />
+          <Property Name="title" Type="nvarchar" MaxLength="10" />
+          <Property Name="certification" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="student" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="videoseries" Type="int" Nullable="false" />
           <Property Name="startdate" Type="datetime" Nullable="false" />
@@ -148,6 +182,7 @@
           <Property Name="payerInfo" Type="int" Nullable="false" />
           <Property Name="enddate" Type="datetime" Nullable="false" />
           <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="section" Type="int" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -170,12 +205,15 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="paid" Type="bit" Nullable="false" />
           <Property Name="URL" Type="varchar" MaxLength="2083" Nullable="false" />
           <Property Name="videoseries" Type="int" Nullable="false" />
           <Property Name="duration" Type="time" Precision="7" />
+          <Property Name="section" Type="int" Nullable="false" />
+          <Property Name="localorder" Type="int" />
+          <Property Name="overview" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="VideoSeries">
           <Key>
@@ -323,18 +361,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="madeby_VideoSeries_Teacher">
-          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
-          <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Teacher">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VideoSeries">
-              <PropertyRef Name="teacher" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="payetinfo_Transactions_CollectionInfo">
           <End Role="CollectionInfo" Type="Self.CollectionInfo" Multiplicity="1" />
           <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
@@ -359,6 +385,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="section_Transactions_Section">
+          <End Role="Section" Type="Self.Section" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="section_Video_Section">
+          <End Role="Section" Type="Self.Section" Multiplicity="1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="student_Transactions_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
@@ -368,6 +418,18 @@
             </Principal>
             <Dependent Role="Transactions">
               <PropertyRef Name="student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacher_VideoSeries_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VideoSeries">
+              <PropertyRef Name="teacher" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -395,6 +457,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="videosery_Section_VideoSeries">
+          <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoSeries">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="videosery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="vidoseries_Transactions_Teacher">
           <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="1" />
           <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
@@ -418,9 +492,11 @@
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionInfo" EntityType="Self.CollectionInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Programms" EntityType="Self.Programms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
@@ -468,10 +544,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Teacher" EntitySet="Teacher" />
           </AssociationSet>
-          <AssociationSet Name="madeby_VideoSeries_Teacher" Association="Self.madeby_VideoSeries_Teacher">
-            <End Role="Teacher" EntitySet="Teacher" />
-            <End Role="VideoSeries" EntitySet="VideoSeries" />
-          </AssociationSet>
           <AssociationSet Name="payetinfo_Transactions_CollectionInfo" Association="Self.payetinfo_Transactions_CollectionInfo">
             <End Role="CollectionInfo" EntitySet="CollectionInfo" />
             <End Role="Transactions" EntitySet="Transactions" />
@@ -480,9 +552,21 @@
             <End Role="Programms" EntitySet="Programms" />
             <End Role="Courses" EntitySet="Courses" />
           </AssociationSet>
+          <AssociationSet Name="section_Transactions_Section" Association="Self.section_Transactions_Section">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="section_Video_Section" Association="Self.section_Video_Section">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
           <AssociationSet Name="student_Transactions_AspNetUsers" Association="Self.student_Transactions_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="teacher_VideoSeries_Teacher" Association="Self.teacher_VideoSeries_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="VideoSeries" EntitySet="VideoSeries" />
           </AssociationSet>
           <AssociationSet Name="usertype_userInfo_userType" Association="Self.usertype_userInfo_userType">
             <End Role="UserType" EntitySet="UserType" />
@@ -492,13 +576,16 @@
             <End Role="VideoSeries" EntitySet="VideoSeries" />
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
+          <AssociationSet Name="videosery_Section_VideoSeries" Association="Self.videosery_Section_VideoSeries">
+            <End Role="VideoSeries" EntitySet="VideoSeries" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
           <AssociationSet Name="vidoseries_Transactions_Teacher" Association="Self.vidoseries_Transactions_Teacher">
             <End Role="VideoSeries" EntitySet="VideoSeries" />
             <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EvilGenius0Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -617,6 +704,7 @@
           <Property Name="program" Type="Int32" Nullable="false" />
           <NavigationProperty Name="VideoSeries" Relationship="Self.course_VideoSeries_Courses" FromRole="Courses" ToRole="VideoSeries" />
           <NavigationProperty Name="Programm" Relationship="Self.program_Courses_Programms" FromRole="Courses" ToRole="Programms" />
+          <Property Name="courseimage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Programm">
           <Key>
@@ -625,6 +713,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Courses" Relationship="Self.program_Courses_Programms" FromRole="Programms" ToRole="Courses" />
+          <Property Name="programpic" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -645,6 +734,12 @@
           <NavigationProperty Name="CollectionInfo1" Relationship="Self.collectioninfo_Teacher_CollectionInfo" FromRole="Teacher" ToRole="CollectionInfo" />
           <NavigationProperty Name="CollectionType1" Relationship="Self.collectionType_Teacher_CollectionType" FromRole="Teacher" ToRole="CollectionType" />
           <NavigationProperty Name="VideoSeries" Relationship="Self.madeby_VideoSeries_Teacher" FromRole="Teacher" ToRole="VideoSeries" />
+          <Property Name="teacherimage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="certification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -662,6 +757,8 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.student_Transactions_AspNetUsers" FromRole="Transactions" ToRole="AspNetUsers" />
           <NavigationProperty Name="CollectionInfo" Relationship="Self.payetinfo_Transactions_CollectionInfo" FromRole="Transactions" ToRole="CollectionInfo" />
           <NavigationProperty Name="VideoSery" Relationship="Self.vidoseries_Transactions_Teacher" FromRole="Transactions" ToRole="VideoSeries" />
+          <Property Name="section" Type="Int32" />
+          <NavigationProperty Name="Section1" Relationship="EvilGenius0Model.section_Transactions_Section" FromRole="Transaction" ToRole="Section" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -693,6 +790,10 @@
           <Property Name="videoseries" Type="Int32" Nullable="false" />
           <Property Name="duration" Type="Time" Precision="7" />
           <NavigationProperty Name="VideoSery" Relationship="Self.videoseries_Video_VideoSeries" FromRole="Video" ToRole="VideoSeries" />
+          <Property Name="section" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Section1" Relationship="EvilGenius0Model.section_Video_Section" FromRole="Video" ToRole="Section" />
+          <Property Name="localorder" Type="Int32" />
+          <Property Name="overview" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="VideoSery">
           <Key>
@@ -715,6 +816,7 @@
           <NavigationProperty Name="Teacher1" Relationship="Self.madeby_VideoSeries_Teacher" FromRole="VideoSeries" ToRole="Teacher" />
           <NavigationProperty Name="Transactions" Relationship="Self.vidoseries_Transactions_Teacher" FromRole="VideoSeries" ToRole="Transactions" />
           <NavigationProperty Name="Videos1" Relationship="Self.videoseries_Video_VideoSeries" FromRole="VideoSeries" ToRole="Video" />
+          <NavigationProperty Name="Sections" Relationship="EvilGenius0Model.videosery_Section_VideoSeries" FromRole="VideoSery" ToRole="Section" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -988,7 +1090,86 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Sections" EntityType="EvilGenius0Model.Section" />
+          <AssociationSet Name="section_Video_Section" Association="EvilGenius0Model.section_Video_Section">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="Video" EntitySet="Videos" />
+          </AssociationSet>
+          <AssociationSet Name="videosery_Section_VideoSeries" Association="EvilGenius0Model.videosery_Section_VideoSeries">
+            <End Role="VideoSery" EntitySet="VideoSeries" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="section_Transactions_Section" Association="EvilGenius0Model.section_Transactions_Section">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <EntitySet Name="Comments" EntityType="EvilGenius0Model.Comment" />
         </EntityContainer>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="videosery" Type="Int32" Nullable="false" />
+          <Property Name="localorder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Videos" Relationship="EvilGenius0Model.section_Video_Section" FromRole="Section" ToRole="Video" />
+          <NavigationProperty Name="VideoSery1" Relationship="EvilGenius0Model.videosery_Section_VideoSeries" FromRole="Section" ToRole="VideoSery" />
+          <Property Name="views" Type="Int32" />
+          <Property Name="enrollments" Type="Int32" />
+          <NavigationProperty Name="Transactions" Relationship="EvilGenius0Model.section_Transactions_Section" FromRole="Section" ToRole="Transaction" />
+        </EntityType>
+        <Association Name="section_Video_Section">
+          <End Type="EvilGenius0Model.Section" Role="Section" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Video" Role="Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="videosery_Section_VideoSeries">
+          <End Type="EvilGenius0Model.VideoSery" Role="VideoSery" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Section" Role="Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoSery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="videosery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="section_Transactions_Section">
+          <End Type="EvilGenius0Model.Section" Role="Section" Multiplicity="0..1" />
+          <End Type="EvilGenius0Model.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="fullname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="upvote_count" Type="Int32" Nullable="false" />
+          <Property Name="user_has_upvoted" Type="Boolean" Nullable="false" />
+          <Property Name="parent" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="createdByCurrentUser" Type="Boolean" Nullable="false" />
+          <Property Name="modified" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1096,6 +1277,7 @@
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="EvilGenius0Model.Cours">
               <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="courseimage" ColumnName="courseimage" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="program" ColumnName="program" />
@@ -1105,6 +1287,7 @@
           <EntitySetMapping Name="Programms">
             <EntityTypeMapping TypeName="EvilGenius0Model.Programm">
               <MappingFragment StoreEntitySet="Programms">
+                <ScalarProperty Name="programpic" ColumnName="programpic" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
@@ -1120,6 +1303,12 @@
           <EntitySetMapping Name="Teachers">
             <EntityTypeMapping TypeName="EvilGenius0Model.Teacher">
               <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="certification" ColumnName="certification" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="teacherimage" ColumnName="teacherimage" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="collectioninfo" ColumnName="collectioninfo" />
                 <ScalarProperty Name="collectiontype" ColumnName="collectiontype" />
@@ -1131,6 +1320,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="EvilGenius0Model.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="section" ColumnName="section" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="student" ColumnName="student" />
                 <ScalarProperty Name="videoseries" ColumnName="videoseries" />
@@ -1165,6 +1355,9 @@
           <EntitySetMapping Name="Videos">
             <EntityTypeMapping TypeName="EvilGenius0Model.Video">
               <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="overview" ColumnName="overview" />
+                <ScalarProperty Name="localorder" ColumnName="localorder" />
+                <ScalarProperty Name="section" ColumnName="section" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="paid" ColumnName="paid" />
@@ -1201,6 +1394,34 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Section">
+              <MappingFragment StoreEntitySet="Section">
+                <ScalarProperty Name="enrollments" ColumnName="enrollments" />
+                <ScalarProperty Name="views" ColumnName="views" />
+                <ScalarProperty Name="localorder" ColumnName="localorder" />
+                <ScalarProperty Name="videosery" ColumnName="videosery" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="modified" ColumnName="modified" />
+                <ScalarProperty Name="createdByCurrentUser" ColumnName="createdByCurrentUser" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="user_has_upvoted" ColumnName="user_has_upvoted" />
+                <ScalarProperty Name="upvote_count" ColumnName="upvote_count" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -23,9 +23,11 @@ namespace Alemni
         public int payerInfo { get; set; }
         public System.DateTime enddate { get; set; }
         public bool active { get; set; }
+        public Nullable<int> section { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual CollectionInfo CollectionInfo { get; set; }
         public virtual VideoSery VideoSery { get; set; }
+        public virtual Section Section1 { get; set; }
     }
 }

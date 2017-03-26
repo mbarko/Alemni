@@ -20,6 +20,7 @@ using JsonPatch;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Alemni.Models.Dtos.MyVideoseriesDtos;
 
 namespace Alemni.Controllers.Api
 {
@@ -47,13 +48,14 @@ namespace Alemni.Controllers.Api
             if (search.IsNullOrWhiteSpace() || search == "")
                 return null;
             string[] searchWords = search.Split(null);
+
           
             var result = from videoSery in db.VideoSeries
-                            where (searchWords.Contains(videoSery.Cours.Programm.name)|| searchWords.Contains(videoSery.Cours.name ) || searchWords.Contains( videoSery.Teacher1.AspNetUser.UserName)) && videoSery.approved == true
+                            where (searchWords.Contains(videoSery.Cours.Programm.name) || searchWords.Contains(videoSery.Cours.Id.ToString()) || searchWords.Contains(videoSery.Cours.name ) || searchWords.Contains( videoSery.Teacher1.Id)) && videoSery.approved == true
                          select (new VideoSeriesListItemDto
                          {
                              Id = videoSery.Id, name = videoSery.name,
-                             teacherName = videoSery.Teacher1.AspNetUser.UserName,
+                             teacherName = videoSery.Teacher1.title + " " +videoSery.Teacher1.firstname + " " + videoSery.Teacher1.lastname,
                              programmName = videoSery.Cours.Programm.name,
                              price = videoSery.price,
                              enrollments = videoSery.enrollments,
@@ -68,30 +70,34 @@ namespace Alemni.Controllers.Api
         }
         [Route("api/VideoSeries/MyVideoSeries")]
         [HttpGet]
-        public async Task<List<VideoSeriesListItemDto>> MyVideoSeries()
+        public async Task<List<MyVideoSeriesListItemDto>> MyVideoSeries()
         {                    
             var currentUserId = User.Identity.GetUserId();
             String student = currentUserId;
-            var result =  await db.Transactions.Where(x => (x.student == student)).Select(item => new VideoSeriesListItemDto
+            var result =  await db.Transactions.Where(x => (x.student == student)).Select(item => new MyVideoSeriesListItemDto
             {
-                Id = item.VideoSery.Id,
-                name = item.VideoSery.name,
-                teacherName = item.VideoSery.Teacher1.AspNetUser.UserName,
-                programmName = item.VideoSery.Cours.Programm.name,
-                price = item.VideoSery.price,
-                enrollments = item.VideoSery.enrollments,
-                views = item.VideoSery.views,
-                videos = item.VideoSery.videos,
-                approved = item.VideoSery.approved,
-                duration = item.VideoSery.duration,
-                seryimage = item.VideoSery.seryimage,
-                startdate = item.startdate,
-                enddate = item.enddate,
-                active = item.active
+                VideoSery = new VideoSeriesListItemDto()
+                {
+                    Id = item.VideoSery.Id,
+                    name = item.VideoSery.name,
+                    teacherName = item.VideoSery.Teacher1.firstname+" "+ item.VideoSery.Teacher1.lastname,
+                    programmName = item.VideoSery.Cours.Programm.name,
+                    price = item.VideoSery.price,
+                    enrollments = item.VideoSery.enrollments,
+                    views = item.VideoSery.views,
+                    videos = item.VideoSery.videos,
+                    approved = item.VideoSery.approved,
+                    duration = item.VideoSery.duration,
+                    seryimage = item.VideoSery.seryimage,
+                    startdate = item.startdate,
+                    enddate = item.enddate,
+                    active = item.active,
+                    
+                },
 
-
-            }).GroupBy(v => v.Id).Select(v => v.FirstOrDefault()).ToListAsync();
-
+                Count = db.Transactions.Where(x => (x.student == student)).Count()
+        }).GroupBy(v => v.VideoSery.Id).Select(v => v.FirstOrDefault()).ToListAsync();
+          
             return result;
         }
         [Route("api/VideoSeries/VideoSeriesICreated")]
@@ -105,16 +111,18 @@ namespace Alemni.Controllers.Api
             String teacher = currentUserId;
             decimal margin = 0.25M;
 
-            var result = await db.VideoSeries.Where(x => (x.teacher == teacher)).Select(item => new VideoSeriesICreadteListItemDto()
+            var result = await db.Sections.Where(x => (x.VideoSery1.teacher == teacher)).Select(item => new VideoSeriesICreadteListItemDto()
             {
                 Id = item.Id,
-                name = item.name,
-                price= item.price,
-                profit = item.Transactions.Select(p=> p.payment *margin).Sum(),
-                enrollments = item.enrollments,
-                views = item.views,
-                approved = item.approved,
-                
+                VideoSeryId = item.videosery,
+                VideoSeryName = item.VideoSery1.name,
+                Price= item.price,
+                Profit = (item.Transactions.Any()) ?  item.Transactions.Select(p=> p.payment *margin).Sum(): 0,
+                Enrollments = (item.Transactions.Any()) ? item.Transactions.Where(i => i.paymentstatus == true ).Count(): 0,
+                Views = 0,
+                Approved = item.VideoSery1.approved,
+                SectionName = item.name,
+                LocalOrder = item.localorder
              
     
 
@@ -142,9 +150,14 @@ namespace Alemni.Controllers.Api
             programmName = videoSery.Cours.Programm.name,
             teacherCredentials = videoSery.Teacher1.credentials,
             teacherEmail = videoSery.Teacher1.AspNetUser.Email,
-            teacherPhone = videoSery.Teacher1.CollectionInfo1.cellnumber
+            teacherPhone = videoSery.Teacher1.CollectionInfo1.cellnumber,
+            teacher = videoSery.Teacher1.Id,
+            teacherFirstName = videoSery.Teacher1.firstname,
+            teacherLastName = videoSery.Teacher1.lastname,
+            Teachertitle = videoSery.Teacher1.title,
+            teacherImage = videoSery.Teacher1.teacherimage
 
-        })).Single(); 
+                            })).Single(); 
            
            
 
@@ -164,16 +177,16 @@ namespace Alemni.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            var v = (from videoSery in db.VideoSeries
-                     where videoSery.Id == videoSeryListItem.Id
-                     select videoSery).First();
+            var v = (from section in db.Sections
+                     where section.Id == videoSeryListItem.Id
+                     select section).First();
             if (videoSeryListItem.Id != v.Id)
             {
                 return BadRequest();
             }
 
-            v.price = videoSeryListItem.price;
-            v.approved = videoSeryListItem.approved;
+            v.price = videoSeryListItem.Price;
+           
 
             db.Entry(v).State = EntityState.Modified;
 

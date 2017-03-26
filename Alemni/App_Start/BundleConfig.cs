@@ -15,7 +15,11 @@ namespace Alemni
                       "~/Scripts/datatables/jquery.datatables.js",
                       "~/Scripts/datatables/datatables.bootstrap.js", "~/Scripts/datatables/datatables.responsive.js",
                        "~/Scripts/bootstrap.js",
-                       "~/Scripts/bootbox.js"
+                       "~/Scripts/bootbox.js",
+                       "~/Scripts/jquery.bxslider.js", "~/Scripts/jquery-comments.js"
+
+
+
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -32,10 +36,12 @@ namespace Alemni
                       "~/Content/DataTables/css/dataTables.bootstrap.css",
                       "~/Content/bootstrap-united.css",
                     
-                      "~/Content/DataTables/css/responsive.datatables.css",
+                      "~/Content/DataTables/css/responsive.datatables.css", 
+                      "~/Content/jquery.bxslider.css", "~/Content/jquery-comments.css",
                         "~/Content/site.css", "~/Content/ionicons/css/ionicons.css",
                           "~/Content/ionicons/css/ionicons.min.css",
                        "~/Content/normalize.css"
+
                        ));
         }
     }

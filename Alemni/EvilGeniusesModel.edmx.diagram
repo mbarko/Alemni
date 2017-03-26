@@ -40,6 +40,11 @@
         <AssociationConnector Association="EvilGenius0Model.usertype_userInfo_userType" ManuallyRouted="false" />
         <AssociationConnector Association="EvilGenius0Model.videoseries_Video_VideoSeries" ManuallyRouted="false" />
         <AssociationConnector Association="EvilGenius0Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Section" Width="1.5" PointX="12.75" PointY="14.125" />
+        <AssociationConnector Association="EvilGenius0Model.section_Video_Section" />
+        <AssociationConnector Association="EvilGenius0Model.videosery_Section_VideoSeries" />
+        <AssociationConnector Association="EvilGenius0Model.section_Transactions_Section" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Comment" Width="1.5" PointX="13.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

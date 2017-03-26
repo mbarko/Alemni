@@ -47,7 +47,24 @@ namespace Alemni.Controllers.Api
 
             return transactions ;
         }
+        // GET: api/Transactions/GetMyActiveClassesCount
+        [System.Web.Mvc.Route("api/Transactions/GetMyActiveClassesCount")]
+        public async Task<int> GetMyActiveClassesCount(int videoSery)
+        {
+            // var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())); 
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUserId = User.Identity.GetUserId();
 
+            String student = currentUserId;
+            DateTime now = DateTime.UtcNow;
+            List<Transaction> transactions = await db.Transactions.Where(x => (x.videoseries == videoSery && x.student == student && (now < x.enddate))).ToListAsync();
+            if (transactions == null)
+            {
+                return 0;
+            }
+
+            return transactions.Count;
+        }
         // GET: api/Transactions/GetMyTransactions
         [System.Web.Mvc.Route("api/Transactions/GetMyTransactions")]
    
@@ -138,7 +155,7 @@ namespace Alemni.Controllers.Api
         // POST: api/Transactions
        
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostTransaction(Transaction videoseriesId)
+        public async Task<IHttpActionResult> PostTransaction(Transaction newTransaction)
         {
             
 
@@ -147,22 +164,26 @@ namespace Alemni.Controllers.Api
             if(currentUser == null)
                 return Ok("please login");
 
+            if((newTransaction.section == null))
+                return BadRequest();
             //Create the transaction object
             Transaction transaction = new Transaction
             {
-                videoseries = videoseriesId.Id,
+                videoseries = newTransaction.videoseries,
                 payerInfo = 1,
                 active = true,
                 startdate = DateTime.UtcNow,
                 enddate = DateTime.UtcNow.AddMonths(6),
                 paymentstatus = true,
                 student = currentUser,
-                payment = 350,
+                payment = newTransaction.payment,
+                section = newTransaction.section
+                
 
             
             };
             var v = (from videoSery in db.VideoSeries
-                    where videoSery.Id== videoseriesId.Id
+                    where videoSery.Id== newTransaction.videoseries
                     select videoSery).First();
             v.enrollments += 1;
             db.Transactions.Add(transaction);

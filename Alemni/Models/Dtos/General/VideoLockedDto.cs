@@ -10,7 +10,7 @@ namespace Alemni.Models.Dtos
         public int Id { get; set; }
         public string name { get; set; }
         public bool paid { get; set; }
-        public string URL { get; }= "none";
+        public string URL { get; }= null;
     public int videoseries { get; set; }
 
         public Nullable<System.TimeSpan> duration { get; set; }

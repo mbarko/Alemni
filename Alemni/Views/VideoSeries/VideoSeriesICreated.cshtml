@@ -21,11 +21,13 @@
     <thead>
         <tr>
             <th>Course Name</th>
+            <th>Section Name</th>
+            <th>Section #</th>
             <th>Price</th>
             <th>My Profit</th>
-            <th>Searchable On 3lemny</th>
+            @*<th>Searchable On 3lemny</th>*@
             <th>Enrollments</th>
-            <th >Views</th>
+            <th>Views</th>
             <th>Go To Page</th>
 
         </tr>
@@ -51,14 +53,26 @@
                                     searchPlaceholder: "Subjects & Tutors"
                                 },
                                 columns: [
+                                     {
+                                         data: "VideoSeryName",
+                                         render: function (data, type, VideoSery) {
+                                             return data;
+                                         }
+                                     },
                                     {
-                                        data: "name",
+                                        data: "SectionName",
                                         render: function(data, type, VideoSery) {
                                             return data;
                                         }
                                     },
+                                       {
+                                           data: "LocalOrder",
+                                           render: function (data, type, VideoSery) {
+                                               return data;
+                                           }
+                                       },
                                     {
-                                        data: "price",
+                                        data: "Price",
                                         sType: "date",
                                         render: function(data, type, VideoSery) {
                                             return "<form id = myForm><div class=\"form-group\">\r\n  " +
@@ -73,33 +87,33 @@
 
                                     },
                                     {
-                                        data: "profit",
-                                        sType: "date",
+                                        data: "Profit",
+                                        sType: "Date",
                                         render: function(data, type, VideoSery) {
                                             return "<div style='color:#38b44a'>" + data + " L.E.</div>";
                                         }
                                     },
-                                    {
-                                        data: "approved",
-                                        render: function (data, type, VideoSery) {
+                                    //{
+                                    //    data: "Approved",
+                                    //    render: function (data, type, VideoSery) {
 
-                                            var span;
-                                            if (data)
-                                                span = " <span> <i class='ion-eye'> </i>Searchable <span class=\"caret\"></span>\r\n   ";
-                                            else span = " <span> <i class='ion-eye-disabled'> </i>Hidden <span class=\"caret\"></span>\r\n   ";
+                                    //        var span;
+                                    //        if (data)
+                                    //            span = " <span> <i class='ion-eye'> </i>Searchable <span class=\"caret\"></span>\r\n   ";
+                                    //        else span = " <span> <i class='ion-eye-disabled'> </i>Hidden <span class=\"caret\"></span>\r\n   ";
 
-                                            return "   <a class=\"dropdown-toggle\"" +
-                                                " data-toggle=\"dropdown\" href=\"#\" aria-expanded=\"true\">\r\n    "
-                                                +span
-                                                +
-                                                " </a>\r\n    <ul class=\"dropdown-menu\">\r\n   " +
-                                                "   <li value=\"searchable\"><a href=\"#dropdown1\" data-toggle=\"tab\"> <i class='ion-eye'> </i>&nbsp;&nbsp;Searchable</a></li>\r\n  " +
-                                                "    <li class=\"divider\"></li>\r\n      <li value=\"hidden\"><a href=\"#dropdown2\" data-toggle=\"tab\"><i class='ion-eye-disabled'> </i>&nbsp;&nbsp;Hidden</a></li>\r\n " +
-                                                "   </ul>";
-                                        }
-                                    },
+                                    //        return "   <a class=\"dropdown-toggle\"" +
+                                    //            " data-toggle=\"dropdown\" href=\"#\" aria-expanded=\"true\">\r\n    "
+                                    //            +span
+                                    //            +
+                                    //            " </a>\r\n    <ul class=\"dropdown-menu\">\r\n   " +
+                                    //            "   <li value=\"searchable\"><a href=\"#dropdown1\" data-toggle=\"tab\"> <i class='ion-eye'> </i>&nbsp;&nbsp;Searchable</a></li>\r\n  " +
+                                    //            "    <li class=\"divider\"></li>\r\n      <li value=\"hidden\"><a href=\"#dropdown2\" data-toggle=\"tab\"><i class='ion-eye-disabled'> </i>&nbsp;&nbsp;Hidden</a></li>\r\n " +
+                                    //            "   </ul>";
+                                    //    }
+                                    //},
                                     {
-                                        data: "enrollments",
+                                        data: "Enrollments",
                                         sType: "date",
                                         render: function(data, type, VideoSery) {
                                             return data;
@@ -107,14 +121,14 @@
 
                                     },
                                     {
-                                        data: "views",
+                                        data: "Views",
                                         sType: "date",
                                         render: function(data, type, VideoSery) {
                                             return "n/a";
                                         }
                                     },
                                     {
-                                        data: "Id",
+                                        data: "VideoSeryId",
                                         sType: "date",
                                         render: function(data, type, VideoSery) {
                                             return "<a href=\"/VideoSeries/VideoSery/" + data + "\">Go</a> ";

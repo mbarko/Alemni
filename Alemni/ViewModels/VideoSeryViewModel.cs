@@ -10,8 +10,10 @@ namespace Alemni.ViewModels
     public class VideoSeryViewModel
     {
         public VideoSeryViewDto VideoSery { get; set; }
-        public IEnumerable< VideoDto> Videos { get; set; }
-        public IEnumerable<VideoLockedDto> VideosLocked { get; set; }
+        public List< VideoDto> Videos { get; set; }
+        public List<VideoLockedDto> VideosLocked { get; set; }
+        public List<SectionDto> Sections { get; set; }
+        
         public bool State { get; set; }
     }
 }

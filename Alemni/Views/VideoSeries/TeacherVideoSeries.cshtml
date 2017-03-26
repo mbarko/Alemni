@@ -1,0 +1,104 @@
+﻿@model Alemni.ViewModels.TeacherViewModel
+@{
+    ViewBag.Title = "Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="teacher_image" style="background-image: linear-gradient(rgba(18, 151, 147,0.8),rgba(18, 151, 147,0.8))
+,url('@Model.Teacher.cover');">
+
+    <div class="jumbotron teacher_jumbotron">
+        <h1>@ViewBag.Search</h1>
+        <div class="teacher_pic" style="background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1))
+,url('@Model.Teacher.teacherimage')"></div>
+    </div>
+    <div class="teacher_summaryTab">
+
+        <div class="container teacher_summaryIcons">
+
+            <div class="col-sm-3 col-lg-3  ">
+                <h5><i class="ion-ribbon-b "></i> Certification : @Model.Teacher.certification</h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5><i class="ion-ios-telephone"></i> Phone : @Model.Teacher.phone </h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5><i class="ion-email "></i> Email : @Model.Teacher.email </h5>
+            </div>
+            <div class="col-sm-3 col-lg-3 ">
+                <h5 id="teacher_enrollments"><i class="ion-ios-videocam"></i> Videoseries : 1  </h5>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="left_tab"><a class="focus_tab" href="#courses_list" data-toggle="tab" aria-expanded="false">Courses</a></li>
+
+                <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">About</a></li>
+
+            </ul>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div class="tab-content" id="teacher_courses">
+
+    <div class=" col-lg-10 col-lg-offset-1 tab-pane fade" id="courses_list">
+        <table class=" table table-striped table-hover responsive " id="courses"><thead><tr><th class="thlead"></th></thead><tbody></tbody></table>
+    </div>
+    <div class="tab-pane fade" id="dropdown1">
+        <br /><br />
+        <div class="col-lg-3">&nbsp;</div>
+        <div class="col-lg-7">
+            <p>
+               @Model.Teacher.credentials;
+            </p>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="quarter_page">&nbsp;</div>
+
+@section scripts
+    {
+    <script>
+        $(document)
+            .ready(function () {
+                $(".focus_tab").click();
+                $("#courses")
+                    .DataTable({
+                        "bAutoWidth": false, "bLengthChange": false,
+                        "bFilter": true,
+                        "searching": false,
+                        "ordering": false,
+                        ajax: {
+                            url: "/api/VideoSeries/search/@Model.Teacher.id",
+                            dataSrc: ""
+                        }, language: {
+                            searchPlaceholder: "Subjects"
+                        },
+                        columns: [
+                            {
+                                data: "name",
+                                render: function (data, type, VideoSery) {
+                                    return "<div class = '  dataTable_maininfo' onclick='location.href=&apos;/VideoSeries/VideoSery/" + VideoSery.Id + "&apos;' >" +
+                                        "<div class='image-box'><div class=' image dataTable_image   ' style =' background-image: url(" + VideoSery.seryimage + ");'>&nbsp </div></div><div class='  col-lg-7 col-xs-7 col-sm-7 col-md-7 dataTable_videoSeryInfo'>" + VideoSery.name + " (" + VideoSery.programmName + ")" +
+                                        "<div  ><h5 class='dataTable_leftCorner'><i class='ion-play' ></i> &nbsp&nbsp" + VideoSery.videos + "   lectures  &nbsp&nbsp <i class='ion-clock' ></i> &nbsp&nbsp" + VideoSery.duration + "   hours</h5></div></div>";
+                                }
+                            }
+
+                        ]
+
+                    }
+                );
+            });
+
+
+
+    </script>
+}
+

@@ -19,6 +19,7 @@ namespace Alemni
         {
             this.Transactions = new HashSet<Transaction>();
             this.Videos1 = new HashSet<Video>();
+            this.Sections = new HashSet<Section>();
         }
     
         public int Id { get; set; }
@@ -41,5 +42,7 @@ namespace Alemni
         public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Video> Videos1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Section> Sections { get; set; }
     }
 }

@@ -25,6 +25,12 @@ namespace Alemni
         public int collectiontype { get; set; }
         public byte[] photo { get; set; }
         public string credentials { get; set; }
+        public string teacherimage { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string title { get; set; }
+        public string certification { get; set; }
+        public string phone { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual CollectionInfo CollectionInfo1 { get; set; }

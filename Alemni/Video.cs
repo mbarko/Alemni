@@ -20,7 +20,11 @@ namespace Alemni
         public string URL { get; set; }
         public int videoseries { get; set; }
         public Nullable<System.TimeSpan> duration { get; set; }
+        public int section { get; set; }
+        public Nullable<int> localorder { get; set; }
+        public string overview { get; set; }
     
         public virtual VideoSery VideoSery { get; set; }
+        public virtual Section Section1 { get; set; }
     }
 }

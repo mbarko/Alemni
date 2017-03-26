@@ -12,7 +12,8 @@ namespace Alemni.Models.Dtos
         public bool paid { get; set; }
         public string URL { get; set; }
         public int videoseries { get; set; }
-
+        public int section { get; set; }
+        public string overview { get; set; }
         public Nullable<System.TimeSpan> duration { get; set; }
     }
 }
