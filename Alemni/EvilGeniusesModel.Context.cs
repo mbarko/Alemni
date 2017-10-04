@@ -46,5 +46,10 @@ namespace Alemni
         public virtual DbSet<VideoSery> VideoSeries { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<Quiz> Quizs { get; set; }
+        public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<Choice> Choices { get; set; }
     }
 }

@@ -13,10 +13,14 @@ namespace Alemni
                        
                       "~/Scripts/respond.js",
                       "~/Scripts/datatables/jquery.datatables.js",
-                      "~/Scripts/datatables/datatables.bootstrap.js", "~/Scripts/datatables/datatables.responsive.js",
+                      "~/Scripts/datatables/datatables.bootstrap.js", 
+                      "~/Scripts/datatables/datatables.responsive.js",
                        "~/Scripts/bootstrap.js",
                        "~/Scripts/bootbox.js",
-                       "~/Scripts/jquery.bxslider.js", "~/Scripts/jquery-comments.js"
+                       "~/Scripts/jquery.bxslider.js", 
+                       "~/Scripts/jquery-comments.js",
+                       "~/Scripts/star-rating.js"
+
 
 
 
@@ -40,7 +44,10 @@ namespace Alemni
                       "~/Content/jquery.bxslider.css", "~/Content/jquery-comments.css",
                         "~/Content/site.css", "~/Content/ionicons/css/ionicons.css",
                           "~/Content/ionicons/css/ionicons.min.css",
-                       "~/Content/normalize.css"
+                       "~/Content/normalize.css",
+                       "~/Content/star-rating.css",
+                       "~/Content/theme-krajee-fa.css"
+
 
                        ));
         }

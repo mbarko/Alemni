@@ -29,7 +29,7 @@ namespace Alemni.Controllers.Api
         public async Task<IEnumerable<SectionDto>> GetSections(int id)
         {
 
-            IEnumerable<SectionDto> result = from Section in db.Sections
+            IEnumerable<SectionDto> result = (from Section in db.Sections
                          where Section.videosery == id
                          select (new SectionDto
                          {
@@ -39,7 +39,7 @@ namespace Alemni.Controllers.Api
                              price = Section.price,
                              localorder = Section.localorder,
                              videosery = Section.videosery
-                         });
+                         })).OrderBy(x => x.localorder);
 
             return result;
         }

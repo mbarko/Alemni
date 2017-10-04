@@ -95,7 +95,7 @@ namespace Alemni.Controllers.Api
                     
                 },
 
-                Count = db.Transactions.Where(x => (x.student == student)).Count()
+                Count = db.Transactions.Where(x => (x.student == student)&& (x.VideoSery.Id == item.VideoSery.Id)).Count()
         }).GroupBy(v => v.VideoSery.Id).Select(v => v.FirstOrDefault()).ToListAsync();
           
             return result;

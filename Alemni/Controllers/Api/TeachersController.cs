@@ -44,7 +44,7 @@ namespace Alemni.Controllers.Api
                                         {
 
                                             name = Cours.name,
-
+                                            courseimage = Cours.courseimage
                                         }),
                               ImageURL = Programm.programpic,
                               Teachers = (from VideoSery in db.VideoSeries

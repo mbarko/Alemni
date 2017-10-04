@@ -36,6 +36,8 @@ namespace Alemni.App_Start
             Mapper.CreateMap<CollectionInfoDto, CollectionInfo>();
             Mapper.CreateMap<Transaction, TransactionDto>();
             Mapper.CreateMap<TransactionDto, Transaction>();
+            Mapper.CreateMap<Question, QuestionDto>();
+            Mapper.CreateMap<QuestionDto, Question>();
 
 
         }

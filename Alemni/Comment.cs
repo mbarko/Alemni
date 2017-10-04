@@ -14,14 +14,21 @@ namespace Alemni
     
     public partial class Comment
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public System.DateTime created { get; set; }
         public string content { get; set; }
         public string fullname { get; set; }
         public int upvote_count { get; set; }
         public bool user_has_upvoted { get; set; }
-        public string parent { get; set; }
+        public Nullable<int> parent { get; set; }
         public bool createdByCurrentUser { get; set; }
         public System.DateTime modified { get; set; }
+        public int vId { get; set; }
+        public string uId { get; set; }
+        public string cId { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual VideoSery VideoSery { get; set; }
+        public virtual Video Video { get; set; }
     }
 }

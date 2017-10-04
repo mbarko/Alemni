@@ -1,0 +1,53 @@
+﻿@model Alemni.ViewModels.QuizViewModel
+@{
+    ViewBag.Title = "Quiz";
+}
+
+
+<object class="col-xs-12 col-lg-7 col-md-7 col-xl-8 sm-no-margin  " data="@Model.QuizDto.url" type="application/pdf"  style="height:85vh">
+    </object>
+
+
+<div class="multiple_choice_container col-xs-12 col-lg-5 col-md-6 col-xl-6 sm-no-margin ">
+    @{int j = 0;}
+    @{int i = 0;}
+    @foreach (var question in @Model.QuizDto.questions)
+    {
+        <form  method="POST"  action="~/Api/Choices/PostChoice">
+        <h3>Question @i of @Model.QuizDto.questions.Count()</h3>
+        <br />
+        <h4>@question.title</h4>
+        <ul>
+
+            @foreach (var answer in @question.answers)
+            {
+                <li>
+                    <input type="radio" id="@j-option" value="@answer.Id" name="id">
+                    <label for="@j-option">@answer.text</label>
+
+                    <div class="check"><div class="inside"></div></div>
+                </li>
+                j++;
+            }
+
+        </ul>
+            <input type="submit" value="Submit">
+
+    </form>
+        i++;
+    }
+
+   
+    
+   
+  
+</div>
+
+</div>
+<div style="z-index:1000;background-color:white;width:100%;height:70px;position:absolute;bottom:0;border-top: solid grey 1px ">
+    <div class="container">
+        <a id="ig_button" href="/Program/Cambridge-IGCSE" class="btn btn-program btn-primary "><h3>IGCSE Cambridge </h3></a>
+    </div>
+   
+</div>
+<div>

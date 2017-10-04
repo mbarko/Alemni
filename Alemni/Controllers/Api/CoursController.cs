@@ -39,7 +39,7 @@ namespace Alemni.Controllers.Api
                          {
                             
                              name = Cours.name,
-                       
+                       courseimage = Cours.courseimage
                          });
 
 

@@ -44,7 +44,21 @@
         <AssociationConnector Association="EvilGenius0Model.section_Video_Section" />
         <AssociationConnector Association="EvilGenius0Model.videosery_Section_VideoSeries" />
         <AssociationConnector Association="EvilGenius0Model.section_Transactions_Section" />
-        <EntityTypeShape EntityType="EvilGenius0Model.Comment" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Comment" Width="1.5" PointX="15.75" PointY="5.75" />
+        <AssociationConnector Association="EvilGenius0Model.uId_AspNetUsers_VideoSeries" />
+        <AssociationConnector Association="EvilGenius0Model.vId_Comments_VideoSeries" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Rating" Width="1.5" PointX="15" PointY="10.25" />
+        <AssociationConnector Association="EvilGenius0Model.user_Rating_AspNetUsers" />
+        <AssociationConnector Association="EvilGenius0Model.video_Rating_VideoSeries" />
+        <AssociationConnector Association="EvilGenius0Model.vId_Comments_Video" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Question" Width="1.5" PointX="15" PointY="18.625" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Quiz" Width="1.5" PointX="12.75" PointY="18.5" />
+        <AssociationConnector Association="EvilGenius0Model.quiz_Qustion_Quiz" />
+        <AssociationConnector Association="EvilGenius0Model.videosery_Quiz_VideoSeries" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Answer" Width="1.5" PointX="17.25" PointY="18.75" />
+        <EntityTypeShape EntityType="EvilGenius0Model.Choice" Width="1.5" PointX="19.5" PointY="18.875" />
+        <AssociationConnector Association="EvilGenius0Model.answer_Choice_Answer" />
+        <AssociationConnector Association="EvilGenius0Model.question_Answer_Question" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

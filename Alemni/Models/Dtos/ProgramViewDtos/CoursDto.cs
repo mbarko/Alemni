@@ -8,5 +8,6 @@ namespace Alemni.Models.Dtos.ProgramViewDtos
     public class CoursDto
     {
         public string name { get; set; }
+        public string courseimage { get; set; }
     }
 }

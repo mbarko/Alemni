@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -187,6 +188,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Answer.cs">
+      <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -209,6 +213,9 @@
     <Compile Include="CardInfo.cs">
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Choice.cs">
+      <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="City.cs">
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
@@ -222,13 +229,19 @@
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\AnswersController.cs" />
+    <Compile Include="Controllers\Api\ChoicesController.cs" />
     <Compile Include="Controllers\Api\CoursController.cs" />
+    <Compile Include="Controllers\Api\QuestionsController.cs" />
+    <Compile Include="Controllers\Api\QuizsController.cs" />
+    <Compile Include="Controllers\Api\RatingsController.cs" />
     <Compile Include="Controllers\Api\SectionsController.cs" />
     <Compile Include="Controllers\Api\TeachersController.cs" />
     <Compile Include="Controllers\Api\TransactionsController.cs" />
     <Compile Include="Controllers\Api\VideosController.cs" />
     <Compile Include="Controllers\Api\VideoSeriesController.cs" />
     <Compile Include="Controllers\Api\CommentsController.cs" />
+    <Compile Include="Controllers\QuizController.cs" />
     <Compile Include="Controllers\VideoSeriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -273,10 +286,18 @@
     <Compile Include="Models\Dtos\MyVideoseriesDtos\MyVideoSeriesListItemDto.cs" />
     <Compile Include="Models\Dtos\ProgramViewDtos\CoursDto.cs" />
     <Compile Include="Models\Dtos\ProgramViewDtos\TeacherDto.cs" />
+    <Compile Include="Models\Dtos\QuizViewDtos\AnswerDto.cs" />
+    <Compile Include="Models\Dtos\QuizViewDtos\ChoiceDto.cs" />
+    <Compile Include="Models\Dtos\QuizViewDtos\QuestionDto.cs" />
+    <Compile Include="Models\Dtos\QuizViewDtos\QuizDto.cs" />
     <Compile Include="Models\Dtos\TeacherViewDtos\TeacherDto.cs" />
     <Compile Include="Models\Dtos\VideoSeriesICreatedDtos\VideoSeriesICreadteListItemDto.cs" />
     <Compile Include="Models\Dtos\VideoSeriesICreatedDtos\VideoSeriesICreatedPatchDto.cs" />
+    <Compile Include="Models\Dtos\VideoSeryViewDtos\CommentDto.cs" />
+    <Compile Include="Models\Dtos\VideoSeryViewDtos\QuestionDto.cs" />
+    <Compile Include="Models\Dtos\VideoSeryViewDtos\QuizDto.cs" />
     <Compile Include="Models\Dtos\VideoSeryViewDtos\SectionDto.cs" />
+    <Compile Include="Models\Dtos\VideoSeryViewDtos\UserDto.cs" />
     <Compile Include="Models\Dtos\VideoSeryViewDtos\VideoSeryViewDto.cs" />
     <Compile Include="Models\Dtos\VidoSeriesViewDtos\VideoSeriesListItemDto.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -286,6 +307,15 @@
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Question.cs">
+      <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Quiz.cs">
+      <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rating.cs">
+      <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Section.cs">
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
@@ -312,8 +342,8 @@
       <DependentUpon>EvilGeniusesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ProgramViewModel.cs" />
+    <Compile Include="ViewModels\QuizViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
-    <Compile Include="ViewModels\VideoSeryLockedViewModel.cs" />
     <Compile Include="ViewModels\VideoSeryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -434,6 +464,8 @@
     <Content Include="Content\jquery-comments.css" />
     <Content Include="Content\jquery.bxslider.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\star-rating.css" />
+    <Content Include="Content\theme-krajee-fa.css" />
     <Content Include="EvilGeniusesModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EvilGeniusesModel.edmx</DependentUpon>
@@ -472,6 +504,11 @@
     <Content Include="EvilGeniusesModel.edmx.diagram">
       <DependentUpon>EvilGeniusesModel.edmx</DependentUpon>
     </Content>
+    <None Include=".bin\bower.cmd" />
+    <None Include=".bin\git.cmd" />
+    <None Include=".bin\node.cmd" />
+    <None Include="Properties\PublishProfiles\3alemny - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\3alemny-learn - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -555,6 +592,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\star-rating.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -601,6 +639,7 @@
     <Content Include="Views\VideoSeries\SubjectVideoSeries.cshtml" />
     <Content Include="Views\Home\Program.cshtml" />
     <Content Include="Views\VideoSeries\TeacherVideoSeries.cshtml" />
+    <Content Include="Views\Quiz\Quiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

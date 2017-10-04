@@ -307,6 +307,7 @@ ul {
 
 
 #ig_button {
+
     
 }
 
@@ -510,11 +511,13 @@ th {
 
 @media (max-width: 992px) {
     .dataTable_image, .dataTable_videoSeryInfo, .image-box {
-        height: 90px;
+        height: 130px;
+
     }
 
     .dataTable_image, .image-box {
-        width: 150px;
+        width: 200px;
+
     }
 
     .dataTable_videoSeryInfo {
@@ -620,6 +623,7 @@ th {
 .VideoSery_video {
   
     height: 53vh;
+    max-height:800px;
 
 }
 .azuremediaplayer  {
@@ -635,7 +639,7 @@ th {
 
 @media (max-width: 768px) {
 .VideoSery_body {
-    margin-top: 52vh;
+    
 }
 
 
@@ -644,7 +648,7 @@ th {
 
 .VideoSery_video {
     background-color: transparent;
-    height: 180px;
+    height: 55vh;
 }
 
 }
@@ -656,6 +660,7 @@ th {
   #lecture_header h1{
     border-bottom:0.5px solid #999999;
     display:inline-block;
+    margin-bottom:20px;
   
 }
 
@@ -690,6 +695,23 @@ list-group-item-heading{
 .badge_take_class{
     background-color:#d34615;
     float:right;
+}
+
+.rating_stars {
+    clear: both;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    text-align: center;
+}
+.caption{
+    display:none;
+}
+#comments-container {
+    clear:both;
+}
+.jquery-comments .commenting-field.main {
+    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 td > .dropdown-menu {
@@ -817,6 +839,11 @@ background-position:center;
          width: 100px;
     height: 100px;
 }
+.teacher_list_button_label {
+    position: absolute;
+    margin-top: 110px;
+    transform: translate(-50%,0);
+}
 #program_courses{
     margin-top:50vh;
 }
@@ -905,73 +932,190 @@ background-position:center;
 #teacher_courses{
     margin-top:50vh;
 }
-#teacher_courses div{
+@media(max-width: 768px) {
+    #teacher_courses {
+        margin-top: 60vh;
+    }
+    }
+@media(max-width: 750px) {
+    #teacher_courses {
+        margin-top: 80vh;
+    }
+}
+@media(max-width: 360px) {
+    #teacher_courses {
+        margin-top: 78vh;
+    }
+}
+    #teacher_courses div {
+    }
 
+    #teacher_courses .table > thead > tr > th, .table > tbody > tr > th, #teacher_courses.table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        border: none;
+    }
+
+    .subject_image {
+        background-size: cover;
+        background-position: center;
+        height: 27vh;
+        width: 100%;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+
+    .subject_summaryTab {
+        top: 26vh;
+        visibility: hidden;
+        position: relative;
+        right: 0;
+        width: 100%;
+    }
+
+    .subject_summaryIcons {
+        padding: 10px;
+        max-width: 100% !important;
+    }
+
+        .subject_summaryIcons ul {
+            margin-top: 10vh;
+        }
+
+            .subject_summaryIcons ul .left_tab {
+                margin-left: 50%;
+            }
+
+            .subject_summaryIcons ul li {
+                transform: translate(-100%,0%);
+            }
+
+
+
+        .subject_summaryIcons div {
+            text-align: center;
+        }
+
+    #subject_enrollments {
+        margin-right: 0px;
+        padding-right: 0px;
+    }
+
+    #subject_courses {
+        margin-top: 30vh;
+    }
+
+        #subject_courses div {
+        }
+
+/* Multiple choice Quiz page
+*
+*
+*
+*
+*
+*
+*/
+
+.multiple_choice_container{
+    height: 85vh ;
+    overflow-y:auto;
+    clear:right;
 }
 
-#teacher_courses .table > thead > tr > th, .table > tbody > tr > th, #teacher_courses.table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
-    border:none;
-    
-}
 
-.subject_image {
-    background-size: cover;
-    background-position: center;
-    height: 27vh;
-    width: 100%;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-
-.subject_summaryTab {
-    top: 26vh;
-  visibility:hidden;
+.multiple_choice_container {
+ 
     position: relative;
-    right: 0;
+    margin: 40px auto;
+    margin-top:0px;
+
+}
+
+.multiple_choice_container h2 {
+    color: #AAAAAA;
+}
+
+    .multiple_choice_container ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+    }
+
+.multiple_choice_container ul li {
+    color: #AAAAAA;
+    display: block;
+    position: relative;
+    float: left;
     width: 100%;
-}
-.subject_summaryIcons {
-
-    padding: 10px;
-    max-width: 100% !important;
-}
-.subject_summaryIcons ul {
-        margin-top:10vh;
-
-    
-  
-}
-.subject_summaryIcons ul .left_tab{
-
-    margin-left:50%;
-        
-  
-}
-.subject_summaryIcons ul li{
-
-    
-        transform: translate(-100%,0%);
-  
+    height: 80px;
+    border-bottom: 1px solid #333;
 }
 
+    .multiple_choice_container ul li input[type=radio] {
+        position: absolute;
+        visibility: hidden;
+    }
 
+    .multiple_choice_container ul li label {
+        display: block;
+        position: relative;
+        font-weight: 300;
+        font-size: 1em;
+        padding: 25px 25px 25px 80px;
+        margin: 10px auto;
+        height: 15px;
+        z-index: 9;
+        cursor: pointer;
+        -webkit-transition: all 0.25s linear;
+    }
 
-.subject_summaryIcons div {
+    .multiple_choice_container ul li:hover label {
+        color: rgba(74,189,172,0.7);
+    }
 
-    text-align:center;
+    .multiple_choice_container ul li .check {
+        display: block;
+        position: absolute;
+        border: 5px solid #AAAAAA;
+        border-radius: 100%;
+        height: 25px;
+        width: 25px;
+        top: 30px;
+        left: 20px;
+        z-index: 5;
+        transition: border .25s linear;
+        -webkit-transition: border .25s linear;
+    }
+
+    .multiple_choice_container ul li:hover .check {
+        border: 5px solid rgba(74,189,172,0.7);
+    }
+
+    .multiple_choice_container ul li .check::before {
+        display: block;
+        position: absolute;
+        content: '';
+        border-radius: 100%;
+        height: 15px;
+        width: 15px;
+        top: 5px;
+        left: 5px;
+        margin: auto;
+        transition: background 0.25s linear;
+        -webkit-transition: background 0.25s linear;
+    }
+
+    .multiple_choice_container  ul input[type=radio]:checked ~ .check {
+        border: 5px solid #0DFF92;
+    }
+
+        .multiple_choice_container input[type=radio]:checked ~ .check::before {
+            background: #0DFF92;
+        }
+
+.multiple_choice_container input[type=radio]:checked ~ label {
+    color: #0DFF92;
 }
-#subject_enrollments {
-    margin-right: 0px;
-    padding-right: 0px;
-   
-}
-#subject_courses{
-    margin-top:30vh;
-}
-#subject_courses div{
-
-}
-

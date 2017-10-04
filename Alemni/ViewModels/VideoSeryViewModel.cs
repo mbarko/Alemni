@@ -11,9 +11,9 @@ namespace Alemni.ViewModels
     {
         public VideoSeryViewDto VideoSery { get; set; }
         public List< VideoDto> Videos { get; set; }
-        public List<VideoLockedDto> VideosLocked { get; set; }
+        public UserDto User { get; set; }
         public List<SectionDto> Sections { get; set; }
-        
+        public List<QuizDto> Quizs { get; set; }
         public bool State { get; set; }
     }
 }

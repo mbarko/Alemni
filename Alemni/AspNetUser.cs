@@ -21,6 +21,8 @@ namespace Alemni
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.Transactions = new HashSet<Transaction>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.Comments = new HashSet<Comment>();
+            this.Ratings = new HashSet<Rating>();
         }
     
         public string Id { get; set; }
@@ -35,6 +37,8 @@ namespace Alemni
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
@@ -45,5 +49,9 @@ namespace Alemni
         public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rating> Ratings { get; set; }
     }
 }

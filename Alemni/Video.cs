@@ -14,6 +14,13 @@ namespace Alemni
     
     public partial class Video
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Video()
+        {
+            this.Ratings = new HashSet<Rating>();
+            this.Comments = new HashSet<Comment>();
+        }
+    
         public int Id { get; set; }
         public string name { get; set; }
         public bool paid { get; set; }
@@ -23,8 +30,13 @@ namespace Alemni
         public int section { get; set; }
         public Nullable<int> localorder { get; set; }
         public string overview { get; set; }
+        public Nullable<int> views { get; set; }
     
         public virtual VideoSery VideoSery { get; set; }
         public virtual Section Section1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rating> Ratings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

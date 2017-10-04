@@ -15,6 +15,15 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="iscorrect" Type="bit" Nullable="false" />
+          <Property Name="question" Type="int" Nullable="false" />
+          <Property Name="text" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -65,12 +74,22 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="lastName" Type="nchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CardInfo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="modifiable" Type="bit" Nullable="false" />
+          <Property Name="answer" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -101,15 +120,18 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="created" Type="datetime" Nullable="false" />
           <Property Name="content" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="fullname" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="upvote_count" Type="int" Nullable="false" />
           <Property Name="user_has_upvoted" Type="bit" Nullable="false" />
-          <Property Name="parent" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="parent" Type="int" />
           <Property Name="createdByCurrentUser" Type="bit" Nullable="false" />
           <Property Name="modified" Type="datetime" Nullable="false" />
+          <Property Name="vId" Type="int" Nullable="false" />
+          <Property Name="uId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="cId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -134,6 +156,35 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
           <Property Name="programpic" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="quiz" Type="int" Nullable="false" />
+          <Property Name="localorder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Quiz">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="localorder" Type="int" Nullable="false" />
+          <Property Name="videosery" Type="int" Nullable="false" />
+          <Property Name="paid" Type="bit" Nullable="false" />
+          <Property Name="url" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="user" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="video" Type="int" Nullable="false" />
+          <Property Name="rating" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Section">
           <Key>
@@ -214,6 +265,7 @@
           <Property Name="section" Type="int" Nullable="false" />
           <Property Name="localorder" Type="int" />
           <Property Name="overview" Type="nvarchar(max)" />
+          <Property Name="views" Type="int" />
         </EntityType>
         <EntityType Name="VideoSeries">
           <Key>
@@ -233,6 +285,18 @@
           <Property Name="seryimage" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="overview" Type="varchar(max)" />
         </EntityType>
+        <Association Name="answer_Choice_Answer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="answer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="city_CollectionInfo_City">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="CollectionInfo" Type="Self.CollectionInfo" Multiplicity="*" />
@@ -385,6 +449,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="question_Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="quiz_Qustion_Quiz">
+          <End Role="Quiz" Type="Self.Quiz" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="quiz" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="section_Transactions_Section">
           <End Role="Section" Type="Self.Section" Multiplicity="0..1" />
           <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
@@ -433,6 +521,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="uId_AspNetUsers_VideoSeries">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="uId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_Rating_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="usertype_userInfo_userType">
           <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
           <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="*" />
@@ -445,6 +557,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="vId_Comments_Video">
+          <End Role="Video" Type="Self.Video" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="vId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="video_Rating_VideoSeries">
+          <End Role="Video" Type="Self.Video" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="video" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="videoseries_Video_VideoSeries">
           <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="1" />
           <End Role="Video" Type="Self.Video" Multiplicity="*" />
@@ -454,6 +590,18 @@
             </Principal>
             <Dependent Role="Video">
               <PropertyRef Name="videoseries" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="videosery_Quiz_VideoSeries">
+          <End Role="VideoSeries" Type="Self.VideoSeries" Multiplicity="1" />
+          <End Role="Quiz" Type="Self.Quiz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoSeries">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quiz">
+              <PropertyRef Name="videosery" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -483,12 +631,14 @@
         </Association>
         <EntityContainer Name="EvilGenius0ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CardInfo" EntityType="Self.CardInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Choice" EntityType="Self.Choice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionInfo" EntityType="Self.CollectionInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
@@ -496,6 +646,9 @@
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Programms" EntityType="Self.Programms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quiz" EntityType="Self.Quiz" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
@@ -504,6 +657,10 @@
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VideoSeries" EntityType="Self.VideoSeries" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="answer_Choice_Answer" Association="Self.answer_Choice_Answer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Choice" EntitySet="Choice" />
+          </AssociationSet>
           <AssociationSet Name="city_CollectionInfo_City" Association="Self.city_CollectionInfo_City">
             <End Role="City" EntitySet="City" />
             <End Role="CollectionInfo" EntitySet="CollectionInfo" />
@@ -552,6 +709,14 @@
             <End Role="Programms" EntitySet="Programms" />
             <End Role="Courses" EntitySet="Courses" />
           </AssociationSet>
+          <AssociationSet Name="question_Answer_Question" Association="Self.question_Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="quiz_Qustion_Quiz" Association="Self.quiz_Qustion_Quiz">
+            <End Role="Quiz" EntitySet="Quiz" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
           <AssociationSet Name="section_Transactions_Section" Association="Self.section_Transactions_Section">
             <End Role="Section" EntitySet="Section" />
             <End Role="Transactions" EntitySet="Transactions" />
@@ -568,13 +733,33 @@
             <End Role="Teacher" EntitySet="Teacher" />
             <End Role="VideoSeries" EntitySet="VideoSeries" />
           </AssociationSet>
+          <AssociationSet Name="uId_AspNetUsers_VideoSeries" Association="Self.uId_AspNetUsers_VideoSeries">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="user_Rating_AspNetUsers" Association="Self.user_Rating_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
           <AssociationSet Name="usertype_userInfo_userType" Association="Self.usertype_userInfo_userType">
             <End Role="UserType" EntitySet="UserType" />
             <End Role="UserInfo" EntitySet="UserInfo" />
           </AssociationSet>
+          <AssociationSet Name="vId_Comments_Video" Association="Self.vId_Comments_Video">
+            <End Role="Video" EntitySet="Video" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="video_Rating_VideoSeries" Association="Self.video_Rating_VideoSeries">
+            <End Role="Video" EntitySet="Video" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
           <AssociationSet Name="videoseries_Video_VideoSeries" Association="Self.videoseries_Video_VideoSeries">
             <End Role="VideoSeries" EntitySet="VideoSeries" />
             <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
+          <AssociationSet Name="videosery_Quiz_VideoSeries" Association="Self.videosery_Quiz_VideoSeries">
+            <End Role="VideoSeries" EntitySet="VideoSeries" />
+            <End Role="Quiz" EntitySet="Quiz" />
           </AssociationSet>
           <AssociationSet Name="videosery_Section_VideoSeries" Association="Self.videosery_Section_VideoSeries">
             <End Role="VideoSeries" EntitySet="VideoSeries" />
@@ -649,6 +834,10 @@
           <NavigationProperty Name="Teacher" Relationship="Self.Id_Teacher_AspNetUsers" FromRole="AspNetUsers" ToRole="Teacher" />
           <NavigationProperty Name="Transactions" Relationship="Self.student_Transactions_AspNetUsers" FromRole="AspNetUsers" ToRole="Transactions" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Comments" Relationship="EvilGenius0Model.uId_AspNetUsers_VideoSeries" FromRole="AspNetUser" ToRole="Comment" />
+          <NavigationProperty Name="Ratings" Relationship="EvilGenius0Model.user_Rating_AspNetUsers" FromRole="AspNetUser" ToRole="Rating" />
         </EntityType>
         <EntityType Name="CardInfo">
           <Key>
@@ -794,6 +983,9 @@
           <NavigationProperty Name="Section1" Relationship="EvilGenius0Model.section_Video_Section" FromRole="Video" ToRole="Section" />
           <Property Name="localorder" Type="Int32" />
           <Property Name="overview" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ratings" Relationship="EvilGenius0Model.video_Rating_VideoSeries" FromRole="Video" ToRole="Rating" />
+          <Property Name="views" Type="Int32" />
+          <NavigationProperty Name="Comments" Relationship="EvilGenius0Model.vId_Comments_Video" FromRole="Video" ToRole="Comment" />
         </EntityType>
         <EntityType Name="VideoSery">
           <Key>
@@ -817,6 +1009,8 @@
           <NavigationProperty Name="Transactions" Relationship="Self.vidoseries_Transactions_Teacher" FromRole="VideoSeries" ToRole="Transactions" />
           <NavigationProperty Name="Videos1" Relationship="Self.videoseries_Video_VideoSeries" FromRole="VideoSeries" ToRole="Video" />
           <NavigationProperty Name="Sections" Relationship="EvilGenius0Model.videosery_Section_VideoSeries" FromRole="VideoSery" ToRole="Section" />
+          <NavigationProperty Name="Comments" Relationship="EvilGenius0Model.vId_Comments_VideoSeries" FromRole="VideoSery" ToRole="Comment" />
+          <NavigationProperty Name="Quizs" Relationship="EvilGenius0Model.videosery_Quiz_VideoSeries" FromRole="VideoSery" ToRole="Quiz" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1104,7 +1298,48 @@
             <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
           <EntitySet Name="Comments" EntityType="EvilGenius0Model.Comment" />
-        </EntityContainer>
+          <AssociationSet Name="uId_AspNetUsers_VideoSeries" Association="EvilGenius0Model.uId_AspNetUsers_VideoSeries">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="vId_Comments_VideoSeries" Association="EvilGenius0Model.vId_Comments_VideoSeries">
+            <End Role="VideoSery" EntitySet="VideoSeries" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <EntitySet Name="Ratings" EntityType="EvilGenius0Model.Rating" />
+          <AssociationSet Name="user_Rating_AspNetUsers" Association="EvilGenius0Model.user_Rating_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="video_Rating_VideoSeries" Association="EvilGenius0Model.video_Rating_VideoSeries">
+            <End Role="Video" EntitySet="Videos" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="vId_Comments_Video" Association="EvilGenius0Model.vId_Comments_Video">
+            <End Role="Video" EntitySet="Videos" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <EntitySet Name="Questions" EntityType="EvilGenius0Model.Question" />
+          <EntitySet Name="Quizs" EntityType="EvilGenius0Model.Quiz" />
+          <AssociationSet Name="quiz_Qustion_Quiz" Association="EvilGenius0Model.quiz_Qustion_Quiz">
+            <End Role="Quiz" EntitySet="Quizs" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="videosery_Quiz_VideoSeries" Association="EvilGenius0Model.videosery_Quiz_VideoSeries">
+            <End Role="VideoSery" EntitySet="VideoSeries" />
+            <End Role="Quiz" EntitySet="Quizs" />
+          </AssociationSet>
+          <EntitySet Name="Answers" EntityType="EvilGenius0Model.Answer" />
+          <EntitySet Name="Choices" EntityType="EvilGenius0Model.Choice" />
+          <AssociationSet Name="answer_Choice_Answer" Association="EvilGenius0Model.answer_Choice_Answer">
+            <End Role="Answer" EntitySet="Answers" />
+            <End Role="Choice" EntitySet="Choices" />
+          </AssociationSet>
+          <AssociationSet Name="question_Answer_Question" Association="EvilGenius0Model.question_Answer_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Section">
           <Key>
             <PropertyRef Name="Id" />
@@ -1160,17 +1395,186 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="fullname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="upvote_count" Type="Int32" Nullable="false" />
           <Property Name="user_has_upvoted" Type="Boolean" Nullable="false" />
-          <Property Name="parent" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="parent" Type="Int32" />
           <Property Name="createdByCurrentUser" Type="Boolean" Nullable="false" />
           <Property Name="modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="vId" Type="Int32" Nullable="false" />
+          <Property Name="uId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="EvilGenius0Model.uId_AspNetUsers_VideoSeries" FromRole="Comment" ToRole="AspNetUser" />
+          <NavigationProperty Name="VideoSery" Relationship="EvilGenius0Model.vId_Comments_VideoSeries" FromRole="Comment" ToRole="VideoSery" />
+          <Property Name="cId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Video" Relationship="EvilGenius0Model.vId_Comments_Video" FromRole="Comment" ToRole="Video" />
         </EntityType>
-      </Schema>
+        <Association Name="uId_AspNetUsers_VideoSeries">
+          <End Type="EvilGenius0Model.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="uId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vId_Comments_VideoSeries">
+          <End Type="EvilGenius0Model.VideoSery" Role="VideoSery" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoSery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="vId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="user" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="video" Type="Int32" Nullable="false" />
+          <Property Name="rating1" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="AspNetUser" Relationship="EvilGenius0Model.user_Rating_AspNetUsers" FromRole="Rating" ToRole="AspNetUser" />
+          <NavigationProperty Name="Video1" Relationship="EvilGenius0Model.video_Rating_VideoSeries" FromRole="Rating" ToRole="Video" />
+        </EntityType>
+        <Association Name="user_Rating_AspNetUsers">
+          <End Type="EvilGenius0Model.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="video_Rating_VideoSeries">
+          <End Type="EvilGenius0Model.Video" Role="Video" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="video" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vId_Comments_Video">
+          <End Type="EvilGenius0Model.Video" Role="Video" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="vId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="quiz" Type="Int32" Nullable="false" />
+          <Property Name="localorder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Quiz1" Relationship="EvilGenius0Model.quiz_Qustion_Quiz" FromRole="Question" ToRole="Quiz" />
+          <NavigationProperty Name="Answers" Relationship="EvilGenius0Model.question_Answer_Question" FromRole="Question" ToRole="Answer" />
+        </EntityType>
+        <EntityType Name="Quiz">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="localorder" Type="Int32" Nullable="false" />
+          <Property Name="videosery" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Questions" Relationship="EvilGenius0Model.quiz_Qustion_Quiz" FromRole="Quiz" ToRole="Question" />
+          <NavigationProperty Name="VideoSery1" Relationship="EvilGenius0Model.videosery_Quiz_VideoSeries" FromRole="Quiz" ToRole="VideoSery" />
+          <Property Name="paid" Type="Boolean" Nullable="false" />
+          <Property Name="url" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="quiz_Qustion_Quiz">
+          <End Type="EvilGenius0Model.Quiz" Role="Quiz" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="quiz" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="videosery_Quiz_VideoSeries">
+          <End Type="EvilGenius0Model.VideoSery" Role="VideoSery" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Quiz" Role="Quiz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoSery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quiz">
+              <PropertyRef Name="videosery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="iscorrect" Type="Boolean" Nullable="false" />
+          <Property Name="question" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Choices" Relationship="EvilGenius0Model.answer_Choice_Answer" FromRole="Answer" ToRole="Choice" />
+          <NavigationProperty Name="Question1" Relationship="EvilGenius0Model.question_Answer_Question" FromRole="Answer" ToRole="Question" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="modifiable" Type="Boolean" Nullable="false" />
+          <Property Name="answer" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Answer1" Relationship="EvilGenius0Model.answer_Choice_Answer" FromRole="Choice" ToRole="Answer" />
+        </EntityType>
+        <Association Name="answer_Choice_Answer">
+          <End Type="EvilGenius0Model.Answer" Role="Answer" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Choice" Role="Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="answer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="question_Answer_Question">
+          <End Type="EvilGenius0Model.Question" Role="Question" Multiplicity="1" />
+          <End Type="EvilGenius0Model.Answer" Role="Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1216,6 +1620,8 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="EvilGenius0Model.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -1355,6 +1761,7 @@
           <EntitySetMapping Name="Videos">
             <EntityTypeMapping TypeName="EvilGenius0Model.Video">
               <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="views" ColumnName="views" />
                 <ScalarProperty Name="overview" ColumnName="overview" />
                 <ScalarProperty Name="localorder" ColumnName="localorder" />
                 <ScalarProperty Name="section" ColumnName="section" />
@@ -1410,6 +1817,9 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="EvilGenius0Model.Comment">
               <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="cId" ColumnName="cId" />
+                <ScalarProperty Name="uId" ColumnName="uId" />
+                <ScalarProperty Name="vId" ColumnName="vId" />
                 <ScalarProperty Name="modified" ColumnName="modified" />
                 <ScalarProperty Name="createdByCurrentUser" ColumnName="createdByCurrentUser" />
                 <ScalarProperty Name="parent" ColumnName="parent" />
@@ -1418,6 +1828,57 @@
                 <ScalarProperty Name="fullname" ColumnName="fullname" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Rating">
+              <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="rating1" ColumnName="rating" />
+                <ScalarProperty Name="video" ColumnName="video" />
+                <ScalarProperty Name="user" ColumnName="user" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="localorder" ColumnName="localorder" />
+                <ScalarProperty Name="quiz" ColumnName="quiz" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quizs">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Quiz">
+              <MappingFragment StoreEntitySet="Quiz">
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="videosery" ColumnName="videosery" />
+                <ScalarProperty Name="localorder" ColumnName="localorder" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="question" ColumnName="question" />
+                <ScalarProperty Name="iscorrect" ColumnName="iscorrect" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Choices">
+            <EntityTypeMapping TypeName="EvilGenius0Model.Choice">
+              <MappingFragment StoreEntitySet="Choice">
+                <ScalarProperty Name="answer" ColumnName="answer" />
+                <ScalarProperty Name="modifiable" ColumnName="modifiable" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

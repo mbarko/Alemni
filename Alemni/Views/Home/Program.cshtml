@@ -24,7 +24,7 @@
         @foreach (var cours in @Model.Courses)
         {
             <li class="">
-                <div class="subject_list_button">hi</div>
+                <div style="background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@cours.courseimage)" value="@cours.name"  class="subject_list_button">hi</div>
                 <a href="../SubjectVideoSeries/@cours.name">@cours.name</a>
     </li>
 
@@ -36,9 +36,11 @@
 <div class="teacher_list">
     <h4><i class="ion-ios-glasses-outline"></i>&nbsp;&nbsp;Teachers</h4>
     <hr>
-    <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@Model.Teachers.FirstOrDefault().teacherimage)" value="@Model.Teachers.FirstOrDefault().id" class="teacher_list_button" data-toggle="tooltip" data-placement="right"
-     title="@Model.Teachers.FirstOrDefault().title  @Model.Teachers.FirstOrDefault().firstname  @Model.Teachers.FirstOrDefault().lastname">&nbsp;</div>
-
+    <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@Model.Teachers.FirstOrDefault().teacherimage)" value="@Model.Teachers.FirstOrDefault().id" class="teacher_list_button">
+    <span  class="teacher_list_button_label text-primary">@Model.Teachers.FirstOrDefault().title  @Model.Teachers.FirstOrDefault().firstname  @Model.Teachers.FirstOrDefault().lastname</span></div>
+   
+    @*data-toggle="tooltip" data-placement="right"
+    title="@Model.Teachers.FirstOrDefault().title  @Model.Teachers.FirstOrDefault().firstname  @Model.Teachers.FirstOrDefault().lastname"*@
 
     <ul class="list-unstyled">
 
@@ -48,8 +50,10 @@
             {
 
                 <li class="col-lg-4 col-md-4">
-                    <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@teacher.teacherimage)" value="@teacher.id" class="teacher_list_button" data-toggle="tooltip" data-placement="right"
-                         title="@teacher.title  @teacher.firstname  @teacher.lastname">&nbsp;</div>
+                    <div style="background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@teacher.teacherimage)" value="@teacher.id" class="teacher_list_button">
+
+                        <span class="teacher_list_button_label text-primary">@teacher.title  @teacher.firstname  @teacher.lastname</span>
+                    </div>
                 </li>
 
             }
@@ -68,7 +72,7 @@
 {
     <script>
         $('.bxslider').bxSlider({
-            minSlides: 3,
+            minSlides: 1,
             maxSlides: 4,
             slideWidth: 250,
             slideMargin: 10,
@@ -86,7 +90,13 @@
    .click(function () {
        var search = $(this).attr("value");
        location.href = "../teacher/"+search
-   });
+            });
+
+        $('.subject_list_button')
+            .click(function () {
+                var search = $(this).attr("value");
+                location.href = "../SubjectVideoSeries/" + search
+            });
 
     </script>}
 

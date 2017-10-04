@@ -20,6 +20,8 @@ namespace Alemni
             this.Transactions = new HashSet<Transaction>();
             this.Videos1 = new HashSet<Video>();
             this.Sections = new HashSet<Section>();
+            this.Comments = new HashSet<Comment>();
+            this.Quizs = new HashSet<Quiz>();
         }
     
         public int Id { get; set; }
@@ -44,5 +46,9 @@ namespace Alemni
         public virtual ICollection<Video> Videos1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Section> Sections { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Quiz> Quizs { get; set; }
     }
 }

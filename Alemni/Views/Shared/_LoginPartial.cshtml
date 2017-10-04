@@ -7,7 +7,7 @@
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" class="">Become an E_tutor</a></li>
+            <li><a href="/Home/Contact" class="">Become an E_tutor</a></li>
            
             <li class="dropdown ">
                 <a id="happy_btn" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><i class='ion-happy'></i> </a>
@@ -38,7 +38,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" class="">Become an E_tutor</a></li>
+        <li><a href="/Home/Contact" class="">Become an E_tutor</a></li>
         <li>@Html.ActionLink("Register", "Register", "Account", new { returnUrl = Request.Url.LocalPath }, htmlAttributes: new {id = "registerLink"})</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", new { returnUrl = Request.Url.LocalPath}, htmlAttributes: new {id = "loginLink"})</li>
     </ul>

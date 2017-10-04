@@ -6,15 +6,17 @@
     <title>@ViewBag.Title-Alemni </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="//amp.azure.net/libs/amp/1.8.0/skins/amp-default/azuremediaplayer.min.css" rel="stylesheet">
-   
+    <link href="//amp.azure.net/libs/amp/1.8.3/skins/amp-default/azuremediaplayer.min.css" rel="stylesheet">
+    <script src="//amp.azure.net/libs/amp/1.8.3/azuremediaplayer.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <script src="//amp.azure.net/libs/amp/1.8.0/azuremediaplayer.min.js"></script>
-   
-
+    @if (Request.IsAuthenticated)
+    {
+    <script src="https://chatwee-api.com/v2/script/59107ebabd616d42518b4576.js"></script>
+    }
 
     <meta name="description" content="The description of my page" />
 </head>
+
 <body>
     @{var bgcolor = ViewBag.NavBarType == ("Image Nav Bar") ? "transparent" : "#009688"; }
     <div class="navbar navbar-inverse navbar-fixed-top navbar_noFix" style="background-color: @bgcolor">
@@ -52,16 +54,19 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+       
+        <footer style="clear:both">
+            <hr />
+            <p>&copy; Barkotel Communications</p>
         </footer>
     </div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
 
+   
     @Scripts.Render("~/bundles/lib")
+   
     @RenderSection("scripts", required: false)
 
 

@@ -125,9 +125,11 @@ namespace Alemni.Controllers
             ViewBag.NavBarType = "";
 
             var videoSeriesControllerApi = new Api.VideoSeriesController();
+            var videosControllerApi = new Api.VideosController();
             var transactionsControllerApi = new Api.TransactionsController();
             var sectionsControllerApi = new Api.SectionsController();
-           
+            var questionsControllerApi = new Api.QuestionsController();
+            var quizControllerApi = new Api.QuizsController();
             var activeTransactions = new List<Transaction>();
 
 
@@ -135,10 +137,10 @@ namespace Alemni.Controllers
             var videoSeryViewDto = videoSeriesControllerApi.GetVideoSery(id);
             if (videoSeryViewDto == null)
                 return HttpNotFound();
-            var videosControllerApi = new Api.VideosController();
+           
             var videosDto = await videosControllerApi.GetVideos(id);
             var sectionsDto = await sectionsControllerApi.GetSections(id);
-          
+            var quizsDto = await quizControllerApi.GetQuizs(id);
 
             bool loggedIn = (System.Web.HttpContext.Current.User != null) &&
                             System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
@@ -160,13 +162,40 @@ namespace Alemni.Controllers
                    i.state = true;
             }
 
+            String currentUserId ="";
+            String firstName = "";
+            String lastName = "";
 
-                var viewModel = new VideoSeryViewModel
+            using (EvilGenius0Entities db = new EvilGenius0Entities())
+            {
+                try
                 {
-                    VideoSery = videoSeryViewDto,
-                    Videos = videosDto.ToList(),
-                    Sections = sectionsDtoList,
-                    State = state,
+                    
+                    currentUserId = User.Identity.GetUserId();
+
+                    AspNetUser currentUser = db.AspNetUsers.FirstOrDefault(x => x.Id == currentUserId);
+
+                    firstName = currentUser.firstName;
+                    lastName = currentUser.lastName;
+                }
+                catch(Exception e) { }
+                finally { db.Dispose(); }
+               
+            }
+            var viewModel = new VideoSeryViewModel
+            {
+                VideoSery = videoSeryViewDto,
+                Videos = videosDto.ToList(),
+                Sections = sectionsDtoList,
+                Quizs = quizsDto.ToList(),
+                State = state,
+               User = new Models.Dtos.VideoSeryViewDtos.UserDto()
+               {
+                   id =currentUserId,
+                   firstName = firstName,
+                   lastName = lastName
+
+        }
 
                 };
                 return View(viewModel);

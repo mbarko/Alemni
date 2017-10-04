@@ -19,7 +19,7 @@
 
     <div class="VideoSery_body">
 
-        <div class="col-xs-12 col-lg-9 col-md-6 col-xl-9 sm-no-margin  white-space">
+        <div class="col-xs-12 col-lg-8 col-md-9 col-xl-3 white-space" >
             <div class="teacher_box">
                 <div style = "background-image: linear-gradient(rgba(18, 151, 147,0.1),rgba(18, 151, 147,0.1)), url(@Model.VideoSery.teacherImage)" value="@Model.VideoSery.teacher" class="col-lg-offset-5 teacher_list_button teacher_link " data-toggle="tooltip" data-placement="right"
                      title="">&nbsp;</div>
@@ -41,17 +41,22 @@
                     <h1 id="lecture_header_head">@Model.Videos.FirstOrDefault().name</h1>
                
 </div>
+            <div class="rating_stars ">
+                <br />
+                <h3>Your rating</h3>
+                <input id="input-4" name="input-4" class="rating rating-loading" data-show-clear="false" data-show-caption="true">
+            </div>
 
         </div>
-        <div class="col-xs-12 col-lg-3 col-md-4 col-xl-3 VideoSery_sidebar-col white-space">
+        <div class="col-xs-12 col-lg-4 col-md-4 col-xl-3 VideoSery_sidebar-col white-space">
             <ul class="nav nav-tabs">
 
-                <li class="active"><a href="#lectures" data-toggle="tab" aria-expanded="true">Lectures</a></li>
-                <li class=""><a id="overview_tab_button"href="#overview" data-toggle="tab" aria-expanded="false">Overview</a></li>
+                <li class="active"><a href="#lectures_sec" data-toggle="tab" aria-expanded="true">Lectures</a></li>
+                <li class=""><a id="quizs_tab_button"href="#quizs" data-toggle="tab" aria-expanded="false">Quizzes</a></li>
 
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" >
+                <div class="tab-pane fade active in"id="lectures_sec" >
                     <ul class="lectures" >
 
 
@@ -78,7 +83,7 @@
                                 {
                                     if (video.section == section.Id)
                                     {
-                                        <a id="v_@video.Id" overview="@video.overview" href="#" name="@video.name" class="list-group-item video_item" value="@video.URL">
+                                        <a id="v_@video.Id" ref="@video.Id"overview="@video.overview" href="#" name="@video.name" class="list-group-item video_item" value="@video.URL">
 
                                             <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
 
@@ -98,7 +103,7 @@
                                         @sectionName
                                         <br />
                                         <br />
-                                        <span class="badge badge_take_class">Join for @price L.E</span>
+                                        <span class="badge badge_take_class">Login to unlock</span>
                                         <br />
                                        
                                 </h4>
@@ -109,7 +114,7 @@
                                 {
                                     if (video.paid)
                                     {
-                                        <a id="v_@video.Id" overview="@video.overview" name="@video.name" href="#" class="list-group-item">
+                                        <a id="v_@video.Id" style="" ref="@video.Id" overview="@video.overview" name="@video.name" class="  list-group-item">
 
                                             <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
 
@@ -120,7 +125,7 @@
                                     }
                                     else
                                     {
-                                        <a id="v_@video.Id" overview="@video.overview" name="@video.name" value="@video.URL" href="#" class="list-group-item">
+                                        <a id="v_@video.Id" ref="@video.Id"overview="@video.overview" name="@video.name" value="@video.URL" href="#" class="video_item list-group-item">
 
                                             <span class="badge">@video.duration.Value.ToString(@"mm\:ss")</span>
 
@@ -139,10 +144,66 @@
 
 
                 </div>
-                <div class="tab-pane fade" id="overview">
-                 
+                <div class="tab-pane fade" id="quizs">
+                    <ul class="quizs">
+
+
+
+                        @foreach (var quiz in @Model.Quizs)
+                        {
+                            var quizId = quiz.Id;
+                            
+                            var quizName = quiz.name;
+                            var quizQuestions = quiz.questions;
+
+                            <div></div>
+
+                            if (true)
+                            {
+                                <a href="../../Quiz/@Model.VideoSery.Id" class="list-group-item" style="height:100px">
+
+                                    <h4 class="list-group-item-heading">@quizName </h4>
+                                    <br />
+                                    <span class="badge badge_joined">Review</span>
+
+                                </a>
+                                foreach (var question in quizQuestions)
+                                {
+                                        <a id="q_@question.Id" ref="@question.Id"  href="#" name="@question.title" class="list-group-item video_item" value="">
+
+                                            <span class="badge">X</span>
+
+
+
+                                            @question.title
+                                        </a>
+                                    
+
+                                }
+                            }
+                            else
+                            {
+                                <a href="#" class="list-group-item" style="height:100px">
+
+                                    <h4 class="transaction_btn list-group-item-heading"  >
+                                        @quizName
+                                        <br />
+                                        <br />
+                                        <span class="badge badge_take_class">Login to unlock</span>
+                                        <br />
+
+                                    </h4>
+
+
+                                </a>
+                             
+                            }
+                        }
+
+
+                    </ul>
                 </div>
-                <div class="tab-pane fade" id="dropdown1">
+                @*<div class="tab-pane fade" id="dropdown1">
                     <div class="list-group">
                         <li href="#" class="list-group-item">
                             <h4 class="list-group-item-heading">Phone </h4>
@@ -156,56 +217,166 @@
                 </div>
                 <div class="tab-pane fade" id="dropdown2">
                     <p>@Model.VideoSery.teacherCredentials</p>
-                </div>
+                </div>*@
             </div>
         </div>
         <a class="col-md-0 sm-no-margin white-space">&nbsp;</a>
 
 
     </div>
-    <div id="comments-container">s</div>
+    
+    
+    <div id="comments-container" class="col-lg-9"></div>
     <div class="quarter_page">&nbsp;</div>
 </div>
 
 @section scripts
 {
     <script>
-        $(document).ready(function () {  $('#comments-container').comments({
-    profilePictureURL: 'https://app.viima.com/static/media/user_profiles/user-icon.png',
-    getComments: function(success, error) {
-        var commentsArray = [{
-            id: 1,
-            created: '2015-10-01',
-            content: 'Lorem ipsum dolort sit amet',
-            fullname: 'Simon Powell',
-            upvote_count: 2,
-            user_has_upvoted: false
-        }];
-        success(commentsArray);
 
-    },
 
-    postComment: function(commentJSON, success, error) {
-        $.ajax({
-            type: 'post',
-            url: '/api/comments/',
-            data: commentJSON,
-            success: function(comment) {
-                success(comment)
-            },
-            error: error
-        });
-    }
-                 });});
-        var currentVideoDisplayed = document.getElementById("v_"+@Model.Videos.FirstOrDefault().Id);
-        $('.transaction_btn')
+
+        $(document).ready(function () {
+
+            var currentVideoDisplayed =$ (document.getElementById("v_" +@Model.Videos.FirstOrDefault().Id));
+
+            $('.rating').click(function () {
+                var value = $('#input-4').val();
+                var video = currentVideoDisplayed.attr("ref");
+                $.ajax({
+                    type: 'post',
+                    url: '/api/Ratings/',
+                    data:
+                    {
+                        video: video,
+                        user: '@Model.User.id',
+                        Id: video + '@Model.User.id',
+                        rating1:value
+
+                    }
+
+                });
+            });
+
+        var myOptions = {
+            "nativeControlsForTouch": false,
+            "logo": { "enabled": false },
+            controls: true,
+            autoplay: false,
+            width: "100%",
+            height: "100%",
+
+
+        }
+        myPlayer = amp("azuremediaplayer", myOptions);
+
+        var source = "@Model.Videos.FirstOrDefault().URL";
+
+        myPlayer.src([
+                {
+                    "src":  source,
+                    "type": "application/vnd.ms-sstr+xml"
+                }
+        ]);
+
+
+        $('.video_item')
+            .click(function () {
+                $("#input-4").rating("clear");
+                currentVideoDisplayed = $(this);
+                 $.ajax({
+                type: 'get',
+                url: "/api/Ratings/" + currentVideoDisplayed.attr("ref") ,
+                success: function (value) {
+                    $('#input-4').rating('update', value);
+                }
+
+                });
+                 $.ajax({
+                     type: 'put',
+                     url: "/api/Videos/UpdateViews/" + currentVideoDisplayed.attr("ref"),
+                     success: function () {
+                        
+                     }
+
+                 });
+
+                 $('#comments-container').comments({
+                     enableReplying: false,
+                     profilePictureURL: 'https://app.viima.com/static/media/user_profiles/user-icon.png',
+                     youText: 'Beta Tester',
+                     textareaPlaceholderText: 'Help us make this application better. What did you think about this videos: quality, usefullness & delivery? ',
+                     enableUpvoting: false,
+
+                     postComment: function (commentJSON, success, error) {
+                         commentJSON["vId"] = currentVideoDisplayed.attr("ref");
+                         $.ajax({
+                             type: 'post',
+                             url: '/api/comments/',
+                             data: commentJSON,
+                             success: function (comment) {
+                                 success(comment)
+                             },
+                             error: error
+                         });
+                     }, fieldMappings: {
+                         id: 'cId',
+
+
+                     },
+
+                     getComments: function (success, error) {
+                         $.ajax({
+                             type: 'get',
+                             url: "/api/VideoSery/comments/" + currentVideoDisplayed.attr("ref"),
+                             success: function (commentsArray) {
+                                 success(commentsArray)
+                             },
+                             error: error
+                         });
+                     }
+
+                 });
+
+
+               var source =  $(this).attr("value");
+               var name=  $(this).attr("name");
+               document.getElementById("lecture_header_head").innerHTML = name;
+               myPlayer.src([
+                   {
+                       "src":  source,
+                       "type": "application/vnd.ms-sstr+xml"
+                   }
+               ])
+            });
+
+        document.getElementById('currentVideoDisplayed').click();
+
+
+
+
+
+
+
+
+        $('.teacher_list_button').click(function () {
+            var search = $(this).attr("value");
+            location.href = "../../Teacher/"+'@Model.VideoSery.teacher' });
+        $('#quizs_tab_button')
+          .click(function() {
+
+              document.getElementById("overview").innerHTML = "<p>" + currentVideoDisplayed.attr("overview") + "</p>";
+              });
+
+
+                           $('.transaction_btn')
             .click(function() {
                 var payment =$(this).attr("price");
                 var section =$(this).attr("sectionId");
                 $.ajax({
                     url: '/api/Transactions',
                     type: 'POST',
-                    
+
                     data:
                     {
                         videoseries: @Model.VideoSery.Id,
@@ -230,46 +401,7 @@
                     }
                 });
             });
-
-        var myOptions = {
-            "nativeControlsForTouch": true,
-            "logo": { "enabled": false },
-            controls: true,
-            autoplay: false,
-            width: "100%",
-            height: "100%",
+        });
 
 
-        }
-        myPlayer = amp("azuremediaplayer", myOptions);
-       
-        var source = "@Model.Videos.FirstOrDefault().URL";
-   
-        myPlayer.src([
-                {
-                    "src":  source,
-                    "type": "application/vnd.ms-sstr+xml"
-                }
-        ]);
-
-        $('.video_item')
-           .click(function() {
-               currentVideoDisplayed = $(this);
-               var source =  $(this).attr("value");
-               var name=  $(this).attr("name");
-               document.getElementById("lecture_header_head").innerHTML = name;
-               myPlayer.src([
-                   {
-                       "src":  source,
-                       "type": "application/vnd.ms-sstr+xml"
-                   }
-               ])});
-        $('.teacher_list_button').click(function () {
-            var search = $(this).attr("value");
-            location.href = "../../Teacher/"+'@Model.VideoSery.teacher' });
-        $('#overview_tab_button')
-          .click(function() {
-              
-              document.getElementById("overview").innerHTML = "<p>"+currentVideoDisplayed.attr("overview")+"</p>";
-              });
     </script>}

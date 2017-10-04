@@ -51,6 +51,41 @@ namespace Alemni.Controllers.Api
         }
 
 
+        //PUT: api/Videos/UpdateViews/{id}
+        [Route("api/Videos/UpdateViews/{id}")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> UpdateViews(int id)
+        {
+            var original = db.Videos.Find(id);
+
+            if (original != null)
+            {
+                original.views += 1;
+             
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VideoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
         // PUT: api/Videos/5
         [ResponseType(typeof(void))]
